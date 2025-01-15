@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", serif;
+    font-optical-sizing: auto;
+    font-optical-sizing: auto;
+}
+
+:root {
+    --primary: #b61c1c;
+    --secondary: #124e8e;
+}
+
+.display-none{
+    display: none;
+}
+
+.primary-text{
+    color: var(--primary);
+}
+
+.primary-background{
+    background-color: var(--primary);
+}
+
+
+.hr {
+    width: 200px;
+    height: 1px;
+    background-color: rgb(175, 175, 175);
+    margin: auto;
+}
+
+.desc-justify {
+    text-align: justify !important;
+}
+
+
+section {
+    margin-top: 50px;
+}
+
+.section-title .title {
+    font-size: 1.5rem !important;
+    font-weight: bold;
+    color: var(--primary);
+
+    // border-bottom: 2px solid var(--primary);
+    width: fit-content;
+
+
+    // @media (max-width: 650px) {
+    //     font-size: 1.5rem !important;
+    // }
+}
+
+.page-title .title {
+    font-size: 2rem !important;
+    font-weight: bold;
+    color: var(--primary);
+
+    @media (max-width: 650px) {
+        font-size: 1.8rem !important;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 1.6rem !important;
+    }
+}
+
+.no-focus-outline:focus {
+    outline: none;
+    box-shadow: none;
+    /* Removes the Bootstrap default shadow */
+}
+
+
+
+
+.styled-placeholder::placeholder {
+    color: #aaa; /* Light gray color */
+    font-style:italic; /* Italicized placeholder */
+    transition: 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+
+/* When focused, change placeholder styling */
+.styled-placeholder:focus::placeholder {
+    color: transparent; /* Hide placeholder on focus */
+    font-style: normal; /* Reset to normal style */
+}
+
+
+
+/* Container with custom scroll */
+.scroll-container {
+    overflow-y: scroll;
+    max-height: 300px;
+    /* Adjust height as needed */
+    scrollbar-width: thin;
+    /* Firefox-specific */
+    scrollbar-color: var(--primary) #f0f0f0;
+    /* Track and thumb colors for Firefox */
+}
+
+/* WebKit Browsers (Chrome, Edge, Safari) */
+.scroll-container::-webkit-scrollbar {
+    width: 8px;
+    /* Scrollbar width */
+}
+
+.scroll-container::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    /* Scrollbar track color */
+    border-radius: 8px;
+    /* Rounded corners */
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    /* Scrollbar thumb color */
+    border-radius: 8px;
+    /* Rounded corners */
+    border: 2px solid #f0f0f0;
+    /* Space around the thumb */
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+    /* Darker blue on hover */
+}
+
+/* For Edge/IE */
+.scroll-container {
+    -ms-overflow-style: none;
+    /* Hide default scrollbar */
+}
+
+/* For consistency (fallback) */
+.scroll-container {
+    scroll-behavior: smooth;
+    /* Smooth scrolling */
+}
+
+
+
+
+/*Scroll None Container Start*/
+.scroll-none-container {
+    overflow-y: scroll;
+    max-height: 300px;
+    /* Adjust height as needed */
+    scrollbar-width: none;
+    /* Firefox-specific */
+    scrollbar-color: none;
+    /* Track and thumb colors for Firefox */
+}
+
+/* WebKit Browsers (Chrome, Edge, Safari) */
+.scroll-none-container::-webkit-scrollbar {
+    width: 8px;
+    /* Scrollbar width */
+}
+
+.scroll-none-container::-webkit-scrollbar-track {
+    background: none;
+    /* Scrollbar track color */
+    border-radius: 8px;
+    /* Rounded corners */
+}
+
+.scroll-none-container::-webkit-scrollbar-thumb {
+    background: none;
+    /* Scrollbar thumb color */
+    border-radius: 8px;
+    /* Rounded corners */
+    border: 2px solid none;
+    /* Space around the thumb */
+}
+
+.scroll-none-container::-webkit-scrollbar-thumb:hover {
+    background: none;
+    /* Darker blue on hover */
+}
+
+/* For Edge/IE */
+.scroll-none-container {
+    -ms-overflow-style: none;
+    /* Hide default scrollbar */
+}
+
+/* For consistency (fallback) */
+.scroll-none-container {
+    scroll-behavior: smooth;
+    /* Smooth scrolling */
+}
+
+
+/*Scroll None Container End*/
+
+
+/*Pagination CSS start*/
+.pagination {
+    .pagination-menus {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        .pagination-link {
+            list-style: none;
+
+            .link {
+                text-decoration: none;
+                font-size: large;
+                border: 1px solid var(--primary);
+                padding: 4px 10px;
+                border-radius: 5px;
+                color: var(--primary);
+
+                transition: all .2s ease;
+
+                &.active {
+                    background-color: var(--primary);
+                    color: white;
+                }
+
+                &:hover {
+                    background-color: var(--primary);
+                    color: white;
+                }
+
+                @media (max-width:380px) {
+                    padding: 2px 6px;
+                    font-size: small;
+                }
+            }
+        }
+    }
+}
+
+/*Pagination CSS end*/

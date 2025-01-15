@@ -1,0 +1,372 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", serif;
+    font-optical-sizing: auto;
+    font-optical-sizing: auto;
+    /* font-size: 1.1rem; */
+}
+
+
+
+
+
+:root {
+    --primary: #b61c1c;
+    /* --primary: #124e8e; */
+
+    --secondary: #124e8e;
+    /* --secondary: #fff100; */
+}
+
+header {
+    overflow-x: hidden;
+}
+
+@media (max-width: 1360px) {
+    section {
+        overflow-x: hidden;
+    }
+}
+
+.news-bar-slider-name {
+    background-color: var(--secondary);
+}
+
+/* header .nav-link {
+    
+} */
+
+/* Default styles for the nav-link */
+header .nav-link {
+    /* font-family: sans-serif; */
+    font-size: .97rem !important;
+    position: relative;
+    display: inline-block;
+    /* Keep text color as white */
+    text-decoration: none;
+    padding: 5px 0;
+    transition: border-color 0.3s ease;
+    line-height: 20px;
+    /* Smooth border color transition */
+}
+
+/* Add a pseudo-element for the border animation */
+header .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    /* Position at the bottom of the link */
+    left: 0;
+    /* Start from the bottom-left */
+    width: 0;
+    /* Initially, the width is 0 */
+    height: 2px;
+    /* Border thickness */
+    background-color: var(--primary);
+    /* Border color */
+    transition: width 0.2s ease-in-out;
+    /* Smoothly expand the width */
+}
+
+/* Hover effect */
+header .nav-link:hover::after {
+    width: 100%;
+}
+
+/* Optional: Keep text color consistent */
+header .nav-link:hover {
+    color: var(--primary);
+}
+
+
+.my-navbar {
+    padding: 8px;
+
+}
+
+.my-navbar .nav-link {
+    color: #1a1a1a;
+    font-weight: 500;
+}
+
+.login-btn {
+    background-color: rgb(211, 211, 211);
+    color: black;
+    border: none;
+    padding: 3px 14px;
+    border-radius: 20px;
+}
+
+.login-btn:hover {
+    opacity: .86;
+}
+
+section {
+    margin-top: 50px;
+}
+
+.section-title span {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+.section-title h2 {
+    font-weight: 700;
+}
+
+
+/* Footer CSS Start */
+
+footer {
+    padding: 60px 0px 20px 0px;
+    background-color: var(--primary);
+    color: white;
+}
+
+footer .footer-link {
+    font-weight: 100;
+}
+
+/* .social-media {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+    gap: 10px;
+} */
+
+.social-media a {
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    font-weight: 800;
+
+    /* background: black; */
+    border: 1px solid white;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    border-radius: 50%;
+
+    transition: all .2s ease-in-out;
+}
+
+.social-media a:hover {
+    background-color: white;
+    color: var(--primary);
+    border: 1px solid white;
+    /* color: black; */
+}
+
+.footer-link .fa-solid {
+    transition: all .2s ease-in-out;
+}
+
+.footer-link:hover .fa-solid {
+    margin: 0 0 0 4px;
+}
+
+
+
+.hr {
+    width: 200px;
+    height: 1px;
+    background-color: rgb(175, 175, 175);
+    margin: auto;
+}
+
+
+.my-logo-design {
+    background-color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+
+    border-radius: 2px;
+
+}
+
+.top-logo-text {
+    font-size: 1rem;
+    /* letter-spacing: 5px;
+    line-height: 40px; */
+    color: white;
+    font-weight: 900;
+    padding: 0;
+}
+
+
+/* Footer CSS End */
+
+
+/* Utill Css Start */
+
+.text-justify {
+    text-align: justify;
+}
+
+/* Utill Css End */
+
+/* Custom Scrollbar Styles (Hide Scrollbars) */
+.custom-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+}
+
+.custom-scroll::-webkit-scrollbar {
+    display: none;
+    /* WebKit Browsers */
+}
+
+/* Responsive Card Styles */
+.news-wrapper .card {
+    flex: 0 0 auto;
+    /* Prevent card shrinking */
+}
+
+
+/* Home CSS Start */
+
+
+
+.top-add-wrapper {
+    /* background-color: var(--primary); */
+    /* border: 20px dotted var(--secondary); */
+
+    /* border: 20px groove green ; */
+
+    /* border: 10px solid transparent;
+    border-image: linear-gradient(to right, red, blue) 1; */
+
+    /* border: 10px solid red;
+    animation: animateBorder 2s infinite; */
+
+    /* box-shadow: 0 0 0 5px red, 0 0 0 10px blue; */
+
+
+    border: 10px solid transparent;
+    border-image: linear-gradient(to right, red, blue) 1;
+
+    animation: animateBorder 2s infinite alternate;
+
+
+
+    height: 100%;
+
+    display: grid;
+    place-content: center;
+}
+
+@keyframes animateBorder {
+    0% {
+        /* border-color: red; */
+        border-image: linear-gradient(to right, red, blue) 1;
+    }
+
+    100% {
+        /* border-color: blue; */
+        border-image: linear-gradient(to right, blue, red) 1;
+    }
+
+
+}
+
+
+.top-add-wrapper h2 {
+    text-align: center;
+    margin: auto;
+    color: white;
+
+}
+
+.top-add-gif {
+    width: 100%;
+    height: 125px;
+    object-fit: contain;
+}
+
+@media (max-width: 850px) {
+    .top-add-gif {
+        height: 100%;
+    }
+
+    .top-add-wrapper {
+        border: 5px solid transparent;
+
+        border-image: linear-gradient(to right, red, blue) 1;
+
+        animation: animateBorder 2s infinite alternate;
+    }
+}
+
+
+.news-wrapper .news-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 0%;
+}
+
+
+.news-wrapper .card {
+    position: relative;
+    /* Ensure child elements can be positioned relative to the card */
+}
+
+.news-wrapper .news-title-wrapper {
+    position: absolute;
+    bottom: 0;
+    /* Position at the bottom of the image */
+    left: 0;
+    /* Align to the left side */
+    width: 100%;
+    /* Span the entire width of the card */
+    background: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent background for readability */
+    padding: 5px;
+    /* Add some padding */
+}
+
+.news-wrapper .news-title {
+    margin: 0;
+    /* Remove default margin */
+    color: white;
+    /* Text color for contrast */
+    font-size: 0.9rem;
+    /* Adjust the font size for a clean look */
+    font-weight: 400;
+    /* Make the title stand out */
+    text-align: left;
+    /* Align text to the left */
+    padding-left: 10px;
+}
+
+
+
+
+
+.news-category-wrap .card {
+    border: 1px solid #ddd;
+    border-radius: 0px;
+    overflow: hidden;
+}
+
+.news-category-wrap .card img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+
+
+/* Home CSS End */
