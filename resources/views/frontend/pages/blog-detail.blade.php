@@ -10,75 +10,41 @@
         <div class="row">
             <!-- Blog Detail Section -->
             <div class="col-lg-8">
-                <img src="{{asset('frontend/img/about/about-2.jpg')}}" class="img-fluid rounded mb-4" alt="Blog Image">
+                <img src="{{asset($blog->image)}}" class="img-fluid rounded mb-4 w-100" alt="Blog Image" loading="lazy">
                 <div class="mb-4">
                     <div class="page-title">
-                        <h1 class="title fw-bold">Blog Title Here</h1>
+                        <h1 class="title fw-bold">{{$blog->title}}</h1>
                     </div>
-                    <p class="">By <span class="fw-semibold">Author Name</span> | Published on <span
-                            class="fw-semibold">Jan 3, 2025</span></p>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut bibendum tincidunt,
-                    nulla purus facilisis nisi, in accumsan odio orci quis turpis. Suspendisse potenti.</p>
-                <p>Phasellus a augue eget nulla feugiat interdum. Duis vitae justo nec erat blandit tincidunt sit
-                    amet in tortor. Vivamus hendrerit ex et leo sagittis, a viverra turpis interdum.</p>
+                    <p class="">Published on <span class="fw-semibold">{{ $blog->created_at->format('M j, Y') }}</span></p>
 
+                </div>
+                {!!$blog->description!!}
             </div>
 
             <!-- Recent Blogs Section -->
             <div class="col-lg-4">
                 <h3 class="fw-bold mb-4 primary-text fs-5">Recent Blogs</h3>
-
-                <div class="card mb-3 border-0 shadow">
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <a href=""><img src="{{asset('frontend/img/about/about-1.png')}}" class="img-fluid h-100 rounded-start"
-                                    alt="Blog Image"></a>
-                        </div>
-                        <div class="col-8">
-                            <div class="card-body">
-                                <a href="" class="text-decoration-none">
-                                    <h5 class="card-title primary-text fw-bold fs-6">Recent Blog Title</h5>
-                                    <p class="card-text text-dark">A short snippet of the recent blog.</p>
-                                </a>
+                 @if(count($recentBlogs)>0)
+                    @foreach ($recentBlogs as $blog)
+                    <div class="card mb-3 border-0 shadow">
+                        <div class="row g-0">
+                            <div class="col-4">
+                                <a href="{{ route('blog.detail',$blog->slug) }}"><img src="{{asset($blog->image)}}" class="img-fluid h-100 rounded-start"
+                                        alt="Blog Image" loading="lazy"></a>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <a href="{{ route('blog.detail',$blog->slug) }}" class="text-decoration-none">
+                                        <h5 class="card-title primary-text fw-bold fs-6">{{$blog->title}}</h5>
+                                        <p class="card-text text-dark">{{ \Illuminate\Support\Str::limit(strip_tags($blog->description), 90) }}</p>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="card mb-3 border-0 shadow">
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <a href=""><img src="{{asset('frontend/img/about/about-2.jpg')}}" class="img-fluid h-100 rounded-start"
-                                    alt="Blog Image"></a>
-                        </div>
-                        <div class="col-8">
-                            <div class="card-body">
-                                <a href="" class="text-decoration-none">
-                                    <h5 class="card-title primary-text fw-bold fs-6">Recent Blog Title</h5>
-                                    <p class="card-text text-dark">A short snippet of the recent blog.</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-3 border-0 shadow">
-                    <div class="row g-0">
-                        <div class="col-4">
-                            <a href=""><img src="{{asset('frontend/img/about/about-1.png')}}" class="img-fluid h-100 rounded-start"
-                                    alt="Blog Image"></a>
-                        </div>
-                        <div class="col-8">
-                            <div class="card-body">
-                                <a href="" class="text-decoration-none">
-                                    <h5 class="card-title primary-text fw-bold fs-6">Recent Blog Title</h5>
-                                    <p class="card-text text-dark">A short snippet of the recent blog.</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    @endforeach
+                 @endif
+               
             </div>
         </div>
     </div>

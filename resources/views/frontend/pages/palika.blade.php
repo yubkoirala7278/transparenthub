@@ -46,7 +46,7 @@
     </section>
 @endsection
 
-@section('customJS')
+@push('script')
     <script src="{{ asset('frontend/js/palika.js') }}"></script>
 
     <script>
@@ -178,4 +178,4 @@
 
         }
     </script> --}}
-@endsection
+@endpush

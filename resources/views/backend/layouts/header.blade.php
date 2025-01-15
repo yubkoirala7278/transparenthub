@@ -31,7 +31,7 @@
             <li>
                 <div class="dropdown">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                        <i class="icon feather icon-bell"></i>
+                        <i class="fa-solid fa-bell"></i>
                         <span class="badge badge-pill badge-danger">5</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right notification">
@@ -103,7 +103,7 @@
             <li>
                 <div class="dropdown drp-user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="feather icon-user"></i>
+                        <i class="fa-solid fa-user-tie"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-notification">
                         <div class="pro-head">
@@ -115,7 +115,7 @@
                                     onclick="event.preventDefault();
                                           document.getElementById('logout-form').submit();"
                                     class="dud-logout" title="Logout">
-                                    <i class="feather icon-log-out"></i>
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -124,9 +124,9 @@
                             </div>
                         </div>
                         <ul class="pro-body">
-                            <li><a href="#" class="dropdown-item"><i class="feather icon-user"></i>
+                            <li><a href="#" class="dropdown-item"><i class="fa-solid fa-user-tie"></i>
                                     Profile</a></li>
-                            <li><a href="#" class="dropdown-item"><i class="feather icon-mail"></i> My
+                            <li><a href="#" class="dropdown-item"><i class="fa-solid fa-envelope"></i> My
                                     Messages</a></li>
                         </ul>
                     </div>

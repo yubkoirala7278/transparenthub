@@ -1,7 +1,6 @@
 <?php
 namespace App\Repositories\Interfaces;
 
-Interface ImageRepositoryInterface{
+Interface BlogRepositoryInterface{
     public function all();
-   
 }

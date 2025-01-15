@@ -191,8 +191,7 @@
     </div>
 @endsection
 
-@section('customJS')
-
+@push('script')
 <script>
     const titles = document.querySelectorAll('.palika-detail-title');
     const sections = document.querySelectorAll('.content-section');
@@ -207,7 +206,4 @@
         });
     });
 </script>
-
-
-
-@endsection
+@endpush

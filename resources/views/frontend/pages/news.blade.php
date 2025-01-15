@@ -430,7 +430,7 @@
 @endsection
 
 
-@section('customJS')
+@push('script')
     <script>
         $(document).ready(function() {
             $('.news-nav-btn').on('click', function() {
@@ -450,4 +450,4 @@
             });
         });
     </script>
-@endsection
+@endpush

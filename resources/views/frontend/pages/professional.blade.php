@@ -508,8 +508,7 @@
     </div>
 @endsection
 
-@section('customJS')
-
+@push('script')
 <script>
     // Add event listener to all parent checkboxes
     document.querySelectorAll('.parent-checkbox').forEach((checkbox) => {
@@ -522,6 +521,5 @@
         });
     });
 </script>
-
-@endsection
+@endpush
 

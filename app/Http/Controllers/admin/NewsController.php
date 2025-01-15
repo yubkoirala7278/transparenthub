@@ -12,7 +12,11 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //
+        try{
+            return view('backend.news.index');
+        }catch(\Throwable $th){
+            return back()->with('error',$th->getMessage());
+        }
     }
 
     /**

@@ -13,10 +13,20 @@
     <link rel="icon" href="{{ asset('logo.png') }}" type="image/x-icon">
 
     {{-- font awesome --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- vendor css -->
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
+     {{-- data table css link --}}
+     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    {{-- toastify css --}}
+    @toastifyCss
+     {{-- CKEditor CDN --}}
+     <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+     {{-- sweet alert 2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -27,7 +37,7 @@
 
     <div class="pcoded-main-container">
         <div class="pcoded-content">
-           @yield('content')
+            @yield('content')
         </div>
     </div>
 
@@ -37,13 +47,28 @@
     <script src="{{ asset('backend/js/plugins/bootstrap.min.js') }}"></script>
     <script src="{{ asset('backend/js/pcoded.min.js') }}"></script>
 
-    <!-- Apex Chart -->
-    <script src="{{ asset('backend/js/plugins/apexcharts.min.js') }}"></script>
-    <!-- custom-chart js -->
-    <script src="{{ asset('backend/js/pages/dashboard-main.js') }}"></script>
 
+    @stack('script')
+    @yield('modal')
 
-    @yield('customJS')
+    {{-- toastify --}}
+    @if (session()->has('success') || session()->has('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                @if (session()->has('success'))
+                    toastify().success({!! json_encode(session('success')) !!});
+                @endif
+                @if (session()->has('error'))
+                    toastify().error({!! json_encode(session('error')) !!});
+                @endif
+            });
+        </script>
+    @endif
+
+    {{-- toastify js --}}
+    @toastifyJs
+     {{-- data table cdn --}}
+     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 </body>
 

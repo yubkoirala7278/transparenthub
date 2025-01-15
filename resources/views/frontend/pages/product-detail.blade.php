@@ -172,7 +172,7 @@
     </main>
 @endsection
 
-@section('customJS')
+@push('script')
     <script>
         const slideImages = document.querySelectorAll(".detail-slide-img");
         const mainImg = document.getElementById("product-detail-img");
@@ -192,4 +192,4 @@
             });
         });
     </script>
-@endsection
+@endpush

@@ -22,23 +22,21 @@
 
 
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/custom.css') }}">
 
     <script src="{{ asset('frontend/js/nepali.js') }}" type="text/javascript"></script>
     <script src="{{ asset('frontend/js/sound.js') }}"></script>
+    {{-- toastify css --}}
+    @toastifyCss
 </head>
 
 <body onload=updateClock();>
 
-
-
-   @include('frontend.layouts.header')
+    @include('frontend.layouts.header')
     <main class="wrapper-contain">
         @yield('content')
     </main>
     @include('frontend.layouts.footer')
-
-
-
 
     <!-- End of nepali calendar widget -->
 
@@ -59,38 +57,27 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-
-
-
-
     <script>
         AOS.init();
     </script>
 
 
-
-    @yield('customJS')
-{{--
-    <script>
-        $(document).ready(function() {
-            $('.title-button').on('click', function() {
-                const dataId = $(this).data('id');
-
-                // Remove active class from all buttons
-                $('.title-button').removeClass('active');
-
-                // Add active class to the clicked button
-                $(this).addClass('active');
-
-                // Hide all news boxes
-                $('.news-box').addClass('d-none');
-
-                // Show the corresponding news box
-                $(`#news-${dataId}`).removeClass('d-none');
+    @stack('script')
+    {{-- toastify --}}
+    @if (session()->has('success') || session()->has('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                @if (session()->has('success'))
+                    toastify().success({!! json_encode(session('success')) !!});
+                @endif
+                @if (session()->has('error'))
+                    toastify().error({!! json_encode(session('error')) !!});
+                @endif
             });
-        });
-    </script> --}}
+        </script>
+    @endif
+    {{-- toastify js --}}
+    @toastifyJs
 
 
     <script src="{{ asset('frontend/js/script.js') }}"></script>
