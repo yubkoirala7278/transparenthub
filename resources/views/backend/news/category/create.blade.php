@@ -10,43 +10,29 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{route('blogs.index')}}" style="color: #2C3E50">Blogs</a>
+                    <a href="{{route('news_category.index')}}" style="color: #2C3E50">Category</a>
                 </li>
             </ul>
-            <a href="{{ route('blogs.index') }}" class="btn text-white btn-sm rounded-pill px-3 py-2"
+            <a href="{{ route('news_category.index') }}" class="btn text-white btn-sm rounded-pill px-3 py-2"
                 style="background-color: #2C3E50">Back</a>
         </div>
         <div>
             <div class="card shadow" style="border-top:none;">
                 <div class="card-header" style="background-color: #2C3E50">
-                    <h5 class="mb-0 text-white">Create New Blog</h5>
+                    <h5 class="mb-0 text-white">Create New Category</h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('blogs.store')}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('news_category.store')}}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="title" class="font-weight-bold">Title</label>
-                            <input type="text" class="form-control" id="title" name="title"
-                                placeholder="Enter Title" value="{{ old('title') }}">
-                                @if ($errors->has('title'))
-                                <span class="text-danger">{{ $errors->first('title') }}</span>
+                            <label for="name" class="font-weight-bold">Category Name</label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                placeholder="Enter Category Name" value="{{ old('name') }}">
+                                @if ($errors->has('name'))
+                                <span class="text-danger">{{ $errors->first('name') }}</span>
                             @endif
                         </div>
-                        <div class="form-group">
-                            <label for="description" class="font-weight-bold">Description</label>
-                            <textarea class="form-control" id="description" rows="4" name="description" placeholder="Enter Description">{{ old('description') }}</textarea>
-                            @if ($errors->has('description'))
-                            <span class="text-danger">{{ $errors->first('description') }}</span>
-                        @endif
-                        </div>
-                        <div class="form-group">
-                            <label for="image" class="font-weight-bold">Upload Image</label>
-                            <input type="file" class="form-control-file" id="image" name="image"
-                                accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/svg">
-                                @if ($errors->has('image'))
-                                <span class="text-danger">{{ $errors->first('image') }}</span>
-                            @endif
-                        </div>
+                     
                         <div class="form-group">
                             <label for="status" class="font-weight-bold">Status</label>
                             <div class="d-flex align-items-center" style="gap: 20px">
@@ -77,16 +63,3 @@
     </div>
     <!-- [ Main Content ] end -->
 @endsection
-
-@push('script')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            ClassicEditor
-                .create(document.querySelector('#description'), {
-                    removePlugins: ['Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload',
-                        'Indent', 'ImageUpload', 'MediaEmbed'
-                    ]
-                });
-        });
-    </script>
-@endpush

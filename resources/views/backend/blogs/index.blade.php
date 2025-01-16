@@ -10,7 +10,7 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="" style="color: #2C3E50">Blogs</a>
+                    <a href="{{route('blogs.index')}}" style="color: #2C3E50">Blogs</a>
                 </li>
             </ul>
             <a href="{{ route('blogs.create') }}" class="btn text-white btn-sm rounded-pill px-3 py-2"
@@ -100,6 +100,9 @@
                         searchable: false,
                         className: 'text-center'
                     }
+                ],
+                order: [
+                    [1, 'asc']
                 ],
                 scrollX: true, // Enables horizontal scrolling
                 responsive: true, // Adds responsive behavior

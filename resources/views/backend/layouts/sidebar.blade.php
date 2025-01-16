@@ -27,31 +27,24 @@
             </div>
 
             <ul class="nav pcoded-inner-navbar ">
-                {{-- <li class="nav-item pcoded-menu-caption">
-                    <label>Navigation</label>
-                </li> --}}
-
                 <li class="nav-item">
                     <a href="{{ route('home') }}" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-house"></i></span><span class="pcoded-mtext">Dashboard</span></a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('news.index') }}" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-newspaper"></i></span><span class="pcoded-mtext">News</span></a>
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-newspaper"></i></span><span class="pcoded-mtext">News</span></a>
+                    <ul class="pcoded-submenu" style="padding: 0px">
+                        <li><a href="{{route('news_category.index')}}">Category</a></li>
+                        <li><a href="{{route('news_source.index')}}">Source</a></li>
+                        <li><a href="#">News</a></li>
+                    </ul>
                 </li>
 
                 <li class="nav-item">
                     <a href="{{ route('blogs.index') }}" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-blog"></i></span><span class="pcoded-mtext">Blogs</span></a>
                 </li>
 
-                {{-- <li class="nav-item pcoded-hasmenu">
-                    <a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i
-                                class="feather icon-layout"></i></span><span class="pcoded-mtext">Page
-                            layouts</span></a>
-                    <ul class="pcoded-submenu">
-                        <li><a href="#">Vertical</a></li>
-                        <li><a href="#">Horizontal</a></li>
-                    </ul>
-                </li> --}}
+                
 
             </ul>
 
