@@ -19,6 +19,7 @@
 
     <!-- vendor css -->
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/css/custom.css') }}">
      {{-- data table css link --}}
      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     {{-- toastify css --}}

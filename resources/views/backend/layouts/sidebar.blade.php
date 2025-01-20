@@ -36,7 +36,7 @@
                     <ul class="pcoded-submenu" style="padding: 0px">
                         <li><a href="{{route('news_category.index')}}">Category</a></li>
                         <li><a href="{{route('news_source.index')}}">Source</a></li>
-                        <li><a href="#">News</a></li>
+                        <li><a href="{{route('news.index')}}">News</a></li>
                     </ul>
                 </li>
 

@@ -32,12 +32,13 @@
                                 <span class="text-danger">{{ $errors->first('title') }}</span>
                             @endif
                         </div>
-                        <div class="form-group">
+                       <div class="form-group">
                             <label for="description" class="font-weight-bold">Description</label>
-                            <textarea class="form-control" id="description" rows="4" name="description" placeholder="Enter Description">{{ old('description') }}</textarea>
+                            <textarea class="form-control" id="description" rows="4" name="description"
+                                placeholder="Enter Description">{{ old('description') }}</textarea>
                             @if ($errors->has('description'))
                             <span class="text-danger">{{ $errors->first('description') }}</span>
-                        @endif
+                            @endif
                         </div>
                         <div class="form-group">
                             <label for="image" class="font-weight-bold">Upload Image</label>

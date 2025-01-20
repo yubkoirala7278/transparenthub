@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BlogRequest extends FormRequest
+class NewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,20 @@ class BlogRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'title' => 'required|max:255',
+            'title' => 'required',
             'description' => 'required',
-            'status' => [
+            'rss' => 'nullable',
+            'category' => [
                 'required',
-                'in:active,inactive' // Ensures the value is either 'active' or 'inactive'
+                'exists:news_categories,id',
+            ],
+            'source' => [
+                'nullable',
+                'exists:news_sources,id',
+            ],
+            'status' =>  [
+                'required',
+                'in:active,inactive'
             ],
         ];
         if ($this->isMethod('post')) { // Store method
@@ -34,7 +43,16 @@ class BlogRequest extends FormRequest
         } elseif ($this->isMethod('put') || $this->isMethod('patch')) { // Update method
             $rules['image'] = 'nullable|image|mimes:webp,jpeg,png,jpg,gif,svg|max:2048';
         }
-
         return $rules;
+    }
+
+    public function messages()
+    {
+        return [
+            'category.required' => 'Please select a category.',
+            'category.exists' => 'The selected category is invalid.',
+            'source.exists' => 'The selected source is invalid.',
+            'status.in' => 'The status must be either active or inactive.'
+        ];
     }
 }

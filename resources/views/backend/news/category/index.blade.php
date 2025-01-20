@@ -10,7 +10,7 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{route('news_category.index')}}" style="color: #2C3E50">Category</a>
+                    <a href="{{ route('news_category.index') }}" style="color: #2C3E50">Category</a>
                 </li>
             </ul>
             <a href="{{ route('news_category.create') }}" class="btn text-white btn-sm rounded-pill px-3 py-2"
@@ -44,6 +44,7 @@
             var table = $('.category-datatable').DataTable({
                 processing: true,
                 serverSide: true,
+                searchDelay: 1000,
                 ajax: "{{ route('news_category.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
@@ -67,17 +68,23 @@
                         orderable: false,
                         searchable: false,
                         className: 'text-center'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at',
+                        visible: false // Hide this column from the table
                     }
                 ],
                 order: [
-                    [1, 'desc']
-                ], // Default sort by 'name'
+                    [4, 'desc'] // Sort by 'created_at'
+                ],
                 responsive: true,
                 language: {
                     emptyTable: "No data available",
                     processing: "Loading..."
                 }
             });
+
             // =====toggle status===================
             $(document).on('click', '.toggle-status-btn', function() {
                 const slug = $(this).data('slug');

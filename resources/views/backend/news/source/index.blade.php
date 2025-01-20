@@ -44,6 +44,7 @@
             var table = $('.source-datatable').DataTable({
                 processing: true,
                 serverSide: true,
+                searchDelay: 1000,
                 ajax: "{{ route('news_source.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
@@ -67,11 +68,16 @@
                         orderable: false,
                         searchable: false,
                         className: 'text-center'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at',
+                        visible: false
                     }
                 ],
                 order: [
-                    [1, 'desc']
-                ], // Default sort by 'name'
+                    [4, 'desc']
+                ], // Default sort by 'created_at'
                 responsive: true,
                 language: {
                     emptyTable: "No data available",

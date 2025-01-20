@@ -19,7 +19,7 @@
         <div>
             <div class="card shadow" style="border-top:none;">
                 <div class="card-header" style="background-color: #2C3E50">
-                    <h5 class="mb-0 text-white">Update Blog</h5>
+                    <h5 class="mb-0 text-white">Blog</h5>
                 </div>
                 <div class="card-body">
                     <h4 class="card-title font-weight-bold text-center" style="color:#2C3E50">{{$blog->title}}</h4>
