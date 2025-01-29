@@ -35,6 +35,12 @@ class NewsController extends Controller
                     ->addColumn('category', function ($news) {
                         return $news->news_categories->name ?? 'N/A';
                     })
+                    ->editColumn('trending_news', function ($news) {
+                       if($news->trending_news){
+                        return '<span class="badge badge-success">Yes</span>';
+                       }
+                       return '<span class="badge badge-danger">No</span>';
+                    })
                     ->addColumn('created_at', function ($news) {
                         return $news->created_at->format('F d, Y'); // Format the date
                     })
@@ -53,7 +59,7 @@ class NewsController extends Controller
                             ';
                         return $buttons;
                     })
-                    ->rawColumns(['status', 'image', 'action']) // Allow HTML rendering
+                    ->rawColumns(['status', 'image', 'action','trending_news']) // Allow HTML rendering
                     ->make(true);
             }
 
@@ -101,7 +107,8 @@ class NewsController extends Controller
                 'status' => $request['status'],
                 'news_categories_id' => $request['category'],
                 'news_sources_id' => $request['source'] ?? null,
-                'rss' => $request['rss'] ?? null
+                'rss' => $request['rss'] ?? null,
+                'trending_news'=>$request['trending_news']
             ]);
             return redirect()->route('news.index')->with('success', 'News has been created successfully!');
         } catch (\Throwable $th) {
@@ -179,7 +186,8 @@ class NewsController extends Controller
                 'status' => $request['status'],
                 'news_categories_id' => $request['category'],
                 'news_sources_id' => $request['source'] ?? null,
-                'rss' => $request['rss'] ?? null
+                'rss' => $request['rss'] ?? null,
+                'trending_news'=>$request['trending_news']
             ]);
             return redirect()->route('news.index')->with('success', 'News has been updated successfully!');
         } catch (\Throwable $th) {

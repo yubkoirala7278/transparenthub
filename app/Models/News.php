@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class News extends Model
 {
     use HasFactory;
-    protected $fillable = ['slug', 'news_categories_id','news_sources_id','title','description','image','rss','status'];
+    protected $fillable = ['slug', 'news_categories_id','news_sources_id','title','description','image','rss','status','views','trending_news'];
     // Boot method to handle model events
     protected static function boot()
     {

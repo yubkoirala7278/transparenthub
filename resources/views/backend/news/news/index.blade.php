@@ -25,6 +25,7 @@
                         <th>Category</th>
                         <th>Image</th>
                         <th>Status</th>
+                        <th>Trending</th>
                         <th>Created At</th>
                         <th>Action</th>
                     </tr>
@@ -98,6 +99,11 @@
                         className: 'text-center'
                     },
                     {
+                        data: 'trending_news',
+                        name: 'trending_news',
+                        className: 'text-center'
+                    },
+                    {
                         data: 'created_at',
                         name: 'created_at',
                         className: 'text-center'
@@ -111,7 +117,7 @@
                     },
                 ],
                 order: [
-                    [5, 'asc']
+                    [6, 'desc']
                 ], // Default sort by title
                 language: {
                     emptyTable: "No news available",

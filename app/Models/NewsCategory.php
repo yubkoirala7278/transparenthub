@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class NewsCategory extends Model
 {
     use HasFactory;
-    protected $fillable = ['slug', 'name','status'];
+    protected $fillable = ['slug', 'name', 'status'];
     // Boot method to handle model events
     protected static function boot()
     {
@@ -33,5 +33,9 @@ class NewsCategory extends Model
         } while (self::where('slug', $slug)->exists()); // Ensure it's unique
 
         return $slug;
+    }
+    public function news()
+    {
+        return $this->hasMany(News::class, 'news_categories_id');
     }
 }

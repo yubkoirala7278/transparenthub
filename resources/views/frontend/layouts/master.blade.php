@@ -28,6 +28,7 @@
     <script src="{{ asset('frontend/js/sound.js') }}"></script>
     {{-- toastify css --}}
     @toastifyCss
+    @yield('custom-css')
 </head>
 
 <body onload=updateClock();>
@@ -36,7 +37,34 @@
     <main class="wrapper-contain">
         @yield('content')
     </main>
+    @yield('modal')
     @include('frontend.layouts.footer')
+    {{-- canvas --}}
+    <!-- Modal -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+                Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images,
+                lists,
+                etc.
+            </div>
+            <div class="dropdown mt-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Dropdown button
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {{-- end of canvas --}}
 
     <!-- End of nepali calendar widget -->
 
@@ -53,9 +81,7 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script>
         AOS.init();

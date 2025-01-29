@@ -21,23 +21,12 @@
 
             <div class="col-lg-2 col-6">
                 <h2 class="fs-6 mb-3 border-bottom border-2" style="width: fit-content;">News</h2>
-                <p class="my-1"><a href="" class="footer-link text-white text-decoration-none"><i
-                            class="fa-solid fa-angle-right me-2"></i>Latest News</a></p>
-                <p class="my-1"><a href="" class="footer-link text-white text-decoration-none"><i
-                            class="fa-solid fa-angle-right me-2"></i>Popular</a></p>
-                <p class="my-1"><a href="" class="footer-link text-white text-decoration-none"><i
-                            class="fa-solid fa-angle-right me-2"></i>National</a></p>
-                <p class="my-1"><a href="" class="footer-link text-white text-decoration-none"><i
-                            class="fa-solid fa-angle-right me-2"></i>Sport</a></p>
-                <p class="my-1"><a href="" class="footer-link text-white text-decoration-none"><i
-                            class="fa-solid fa-angle-right me-2"></i>Health</a></p>
-                <p class="my-1"><a href="" class="footer-link text-white text-decoration-none"><i
-                            class="fa-solid fa-angle-right me-2"></i>Finance</a></p>
-                <p class="my-1"><a href="" class="footer-link text-white text-decoration-none"><i
-                            class="fa-solid fa-angle-right me-2"></i>Technology</a></p>
-                <p class="my-1"><a href="" class="footer-link text-white text-decoration-none"><i
-                            class="fa-solid fa-angle-right me-2"></i>Entertainment</a></p>
-
+                <p class="my-1"><a href="{{ route('news.with.category', 'all_news') }}" class="footer-link text-white text-decoration-none"><i
+                            class="fa-solid fa-angle-right me-2"></i>समाचार</a></p>
+                @foreach ($news_categories as $key => $news_category)
+                    <p class="my-1"><a href="{{ route('news.with.category', $news_category->name) }}" class="footer-link text-white text-decoration-none"><i
+                                class="fa-solid fa-angle-right me-2"></i>{{$news_category->name}}</a></p>
+                @endforeach
             </div>
 
             <div class="col-lg-2 col-6">
@@ -67,8 +56,7 @@
                 <p class="my-1"><a class="footer-link text-white text-decoration-none" href="blog.html">
                         <i class="fa-solid fa-angle-right me-2"></i>
                         Blog</a></p>
-                <p class="my-1"><a class="footer-link text-white text-decoration-none"
-                        href="result-check.html">
+                <p class="my-1"><a class="footer-link text-white text-decoration-none" href="result-check.html">
                         <i class="fa-solid fa-angle-right me-2"></i>
                         Features</a></p>
                 <p class="my-1"><a class="footer-link text-white text-decoration-none" href="">
@@ -85,8 +73,7 @@
                 <p class="my-1"><a href="" class="footer-link text-white text-decoration-none"><i
                             class="fa-solid fa-angle-right me-2"></i>Lekh Taha Detail</a></p>
                 <p class="my-1"><a href="" class="footer-link text-white text-decoration-none"><i
-                            class="fa-solid fa-angle-right me-2"
-                            style="word-break: break-all;"></i>Ads/Bigyapanharu
+                            class="fa-solid fa-angle-right me-2" style="word-break: break-all;"></i>Ads/Bigyapanharu
                     </a></p>
             </div>
 
@@ -109,8 +96,7 @@
 
                 <div class="social-media mt-4">
                     <div class="mb-3">
-                        <h2 class="fs-6 m-0 p-0 mb-3 text-white border-bottom border-2"
-                            style="width: fit-content;">
+                        <h2 class="fs-6 m-0 p-0 mb-3 text-white border-bottom border-2" style="width: fit-content;">
                             Follow Us:</h2>
                     </div>
                     <div class="d-flex gap-2">

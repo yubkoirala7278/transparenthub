@@ -36,20 +36,12 @@
                         {{-- description --}}
                         <div class="form-group">
                             <label for="description" class="font-weight-bold">Description</label>
-                            <textarea class="form-control" id="description" rows="4" name="description" placeholder="Enter Description">{{ old('description') }}</textarea>
+                            <textarea class="form-control" id="description" column="7" name="description" placeholder="Enter Description">{{ old('description') }}</textarea>
                             @if ($errors->has('description'))
                                 <span class="text-danger">{{ $errors->first('description') }}</span>
                             @endif
                         </div>
-                        {{-- image --}}
-                        <div class="form-group">
-                            <label for="image" class="font-weight-bold">Upload Image</label>
-                            <input type="file" class="form-control-file" id="image" name="image"
-                                accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/svg">
-                            @if ($errors->has('image'))
-                                <span class="text-danger">{{ $errors->first('image') }}</span>
-                            @endif
-                        </div>
+
 
                         {{-- category --}}
                         <div class="form-group">
@@ -71,7 +63,7 @@
                         </div>
                         {{-- rss --}}
                         <div class="form-group">
-                            <label for="rss" class="font-weight-bold">RSS(Optional)</label>
+                            <label for="rss" class="font-weight-bold">साभार(Optional)</label>
                             <input type="text" class="form-control" id="rss" name="rss" placeholder="Enter RSS"
                                 value="{{ old('rss') }}">
                             @if ($errors->has('rss'))
@@ -80,7 +72,7 @@
                         </div>
                         {{-- source --}}
                         <div class="form-group">
-                            <label for="source" class="font-weight-bold">Source(Optional)</label>
+                            <label for="source" class="font-weight-bold">News Source(Optional)</label>
                             <select class="form-control" name="source">
                                 <option selected disabled>Select Source</option>
                                 @if (count($sources) > 0)
@@ -114,6 +106,36 @@
                             </div>
                             @if ($errors->has('status'))
                                 <span class="text-danger">{{ $errors->first('status') }}</span>
+                            @endif
+                        </div>
+                        {{-- trending news --}}
+                        <div class="form-group">
+                            <label for="trending_news" class="font-weight-bold">Trending News</label>
+                            <div class="d-flex align-items-center" style="gap: 20px">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="trending_news" value="1"
+                                        {{ old('trending_news', '1') === '1' ? 'checked' : '' }} id="trending_news">
+                                    <label class="form-check-label" for="trending_news">Trending</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="trending_news" value="0"
+                                        {{ old('trending_news', '0') === '0' ? 'checked' : '' }} id="not_trending_news" checked>
+                                    <label class="form-check-label" for="not_trending_news">Not Trending</label>
+                                </div>
+                            </div>
+                            @if ($errors->has('trending_news'))
+                                <span class="text-danger">{{ $errors->first('trending_news') }}</span>
+                            @endif
+                        </div>
+                        
+
+                        {{-- image --}}
+                        <div class="form-group">
+                            <label for="image" class="font-weight-bold">Upload Feature Image</label>
+                            <input type="file" class="form-control-file" id="image" name="image"
+                                accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/svg">
+                            @if ($errors->has('image'))
+                                <span class="text-danger">{{ $errors->first('image') }}</span>
                             @endif
                         </div>
                         <div class="form-group text-right">

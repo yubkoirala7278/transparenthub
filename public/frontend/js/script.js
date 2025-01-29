@@ -26,7 +26,7 @@ if (ProfessionalSlider) {
             320: {
                 items: 2
             },
-            
+
             500: {
                 items: 3
             },
@@ -67,7 +67,7 @@ if (productCategorySlider) {
             320: {
                 items: 3
             },
-            
+
             500: {
                 items: 3
             },
@@ -89,19 +89,19 @@ if (topNewSlider) {
     var slider = tns({
         container: '.top-news-slider',
         items: 3,
-        gutter: 0,
-        edgePadding: 0,
+        gutter: 0, // Added some spacing for better appearance
+        edgePadding: 20, // Added padding for a polished look
         autoplay: true,
+        autoplayTimeout: 8000, // Set autoplay interval to 5 seconds
         mouseDrag: true,
         controls: false,
+        controlsText: ['<i class="fas">&#xf104;</i>', '<i class="fas">&#xf105;</i>'],
         nav: false,
         autoplayButtonOutput: false,
-        speed: 8000,
-        autoplayTimeout: 4100,
-        autoplayHoverPause: true,
+        speed: 400, // Reduced speed for smooth transitions
+        autoplayHoverPause: true, // Pause autoplay on hover
         responsive: {
             0: {
-               
                 items: 1
             },
             500: {
@@ -113,10 +113,20 @@ if (topNewSlider) {
             1700: {
                 items: 4
             },
-    
         }
     });
+
+    // Adjust autoplay behavior to stop immediately on hover
+    const sliderContainer = document.querySelector('.top-news-slider');
+    sliderContainer.addEventListener('mouseover', () => {
+        slider.pause(); // Pause autoplay instantly on hover
+    });
+
+    sliderContainer.addEventListener('mouseout', () => {
+        slider.play(); // Resume autoplay when hover ends
+    });
 }
+
 
 
 if (testominalSlider) {
@@ -139,7 +149,7 @@ if (testominalSlider) {
             0: {
                 items: 1
             },
-            
+
             500: {
                 items: 2
             },

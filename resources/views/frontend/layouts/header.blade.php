@@ -2,7 +2,8 @@
     <div class="top-nav-bar">
         <div class="container-fluid">
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-                <p class="date"><span class="me-2">आजको मिति :</span><span id="DATE_IN_NEPALI"></span> / <span id="TIME_IN_NEPALI"></span></p>
+                <p class="date"><span class="me-2">आजको मिति :</span><span id="DATE_IN_NEPALI"></span> / <span
+                        id="TIME_IN_NEPALI"></span></p>
 
                 <div class="d-flex gap-2">
                     <a href="">Forex</a>
@@ -26,7 +27,8 @@
                         </button>
                         <div class="my-logo-design">
                             <a href="/" class="text-decoration-none d-block d-lg-none">
-                                <img src="{{ asset('frontend/img/logo.jpg') }}" style="height: 50px;" alt="">
+                                <img src="{{ asset('frontend/img/logo.jpg') }}" style="height: 50px;" alt="Header Image"
+                                    loading="lazy">
                             </a>
                         </div>
                     </div>
@@ -59,7 +61,7 @@
 
                                 <li class="nav-item">
                                     <a class="nav-link {{ request()->routeIs('news') ? 'active' : '' }}"
-                                        href="{{ route('news') }}">News</a>
+                                        href="{{ route('news.with.category','all_news') }}">News</a>
                                 </li>
 
                                 <li class="nav-item">
@@ -82,7 +84,7 @@
                                     <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}"
                                         href="{{ route('contact') }}">Contact</a>
                                 </li>
-                                @if (Route::has('login'))
+                                {{-- @if (Route::has('login'))
                                     @auth
                                         <li class="nav-item">
                                             <a class="btn btn-success" href="{{ url('/admin/home') }}">Dashboard</a>
@@ -98,7 +100,13 @@
                                             </li>
                                         @endif
                                     @endauth
-                                @endif
+                                @endif --}}
+                                {{-- <li class="nav-item">
+                                    <a class="btn btn-success" data-bs-toggle="offcanvas" href="#offcanvasExample"
+                                        role="button" aria-controls="offcanvasExample">
+                                        News Category
+                                    </a>
+                                </li> --}}
 
                             </ul>
 

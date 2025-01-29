@@ -34,4 +34,8 @@ class NewsSource extends Model
 
         return $slug;
     }
+    public function news()
+    {
+        return $this->hasMany(News::class, 'news_sources_id');
+    }
 }

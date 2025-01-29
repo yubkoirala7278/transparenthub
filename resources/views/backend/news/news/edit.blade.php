@@ -42,15 +42,7 @@
                                 <span class="text-danger">{{ $errors->first('description') }}</span>
                             @endif
                         </div>
-                        {{-- image --}}
-                        <div class="form-group">
-                            <label for="image" class="font-weight-bold">Upload Image</label>
-                            <input type="file" class="form-control-file" id="image" name="image"
-                                accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/svg">
-                            @if ($errors->has('image'))
-                                <span class="text-danger">{{ $errors->first('image') }}</span>
-                            @endif
-                        </div>
+
 
                         {{-- category --}}
                         <div class="form-group">
@@ -98,7 +90,7 @@
                                 <span class="text-danger">{{ $errors->first('source') }}</span>
                             @endif
                         </div>
-                        
+
 
 
                         {{-- status --}}
@@ -121,6 +113,36 @@
                                 <span class="text-danger">{{ $errors->first('status') }}</span>
                             @endif
                         </div>
+                        {{-- Trending News --}}
+                        <div class="form-group">
+                            <label for="trending_news" class="font-weight-bold">Trending News</label>
+                            <div class="d-flex align-items-center" style="gap: 20px">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="trending_news" value="1"
+                                        {{ old('trending_news', $news->trending_news) == '1' ? 'checked' : '' }} id="trending_news">
+                                    <label class="form-check-label" for="trending_news" >Trending</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="trending_news" value="0"
+                                        {{ old('trending_news', $news->trending_news) == '0' ? 'checked' : '' }}
+                                        id="not_trending_news">
+                                    <label class="form-check-label" for="not_trending_news">Not Trending</label>
+                                </div>
+                            </div>
+                            @if ($errors->has('trending_news'))
+                                <span class="text-danger">{{ $errors->first('trending_news') }}</span>
+                            @endif
+                        </div>
+
+                        {{-- image --}}
+                        <div class="form-group">
+                            <label for="image" class="font-weight-bold">Upload Feature Image</label>
+                            <input type="file" class="form-control-file" id="image" name="image"
+                                accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/svg">
+                            @if ($errors->has('image'))
+                                <span class="text-danger">{{ $errors->first('image') }}</span>
+                            @endif
+                        </div>
                         <div class="form-group text-right">
                             <button type="submit" class="btn btn-success">Submit</button>
                             <button type="reset" class="btn btn-secondary">Reset</button>
@@ -135,59 +157,60 @@
 @endsection
 
 @push('script')
-<script>
-    ClassicEditor
-        .create(document.querySelector('#description'), {
-            ckfinder: {
-                uploadUrl: '{{ route("ckeditor.upload") . '?_token=' . csrf_token() }}',
-            },
-        })
-        .then(editor => {
-            // Initialize previousImages with images already in the description
-            let previousImages = extractImageSources(editor.getData());
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#description'), {
+                ckfinder: {
+                    uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}',
+                },
+            })
+            .then(editor => {
+                // Initialize previousImages with images already in the description
+                let previousImages = extractImageSources(editor.getData());
 
-            // Detect content changes in CKEditor
-            editor.model.document.on('change:data', () => {
-                const content = editor.getData();
-                const currentImages = extractImageSources(content);
+                // Detect content changes in CKEditor
+                editor.model.document.on('change:data', () => {
+                    const content = editor.getData();
+                    const currentImages = extractImageSources(content);
 
-                // Compare previous and current images to find deleted ones
-                const deletedImages = previousImages.filter(img => !currentImages.includes(img));
-                if (deletedImages.length > 0) {
-                    deleteImagesFromServer(deletedImages);
+                    // Compare previous and current images to find deleted ones
+                    const deletedImages = previousImages.filter(img => !currentImages.includes(img));
+                    if (deletedImages.length > 0) {
+                        deleteImagesFromServer(deletedImages);
+                    }
+
+                    previousImages = currentImages; // Update the image list
+                });
+
+                // Extract image URLs from content
+                function extractImageSources(content) {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = content;
+                    const images = Array.from(tempDiv.querySelectorAll('img')).map(img => img.getAttribute('src'));
+                    return images;
                 }
 
-                previousImages = currentImages; // Update the image list
-            });
-
-            // Extract image URLs from content
-            function extractImageSources(content) {
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = content;
-                const images = Array.from(tempDiv.querySelectorAll('img')).map(img => img.getAttribute('src'));
-                return images;
-            }
-
-            // Send a request to delete images from the server
-            function deleteImagesFromServer(images) {
-                fetch('{{ route("ckeditor.delete") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    },
-                    body: JSON.stringify({ images }),
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!data.success) {
-                            console.error('Failed to delete images:', data.message);
-                        }
-                    })
-                    .catch(error => console.error('Error deleting images:', error));
-            }
-        })
-        .catch(error => console.error('Error initializing CKEditor:', error));
-</script>
+                // Send a request to delete images from the server
+                function deleteImagesFromServer(images) {
+                    fetch('{{ route('ckeditor.delete') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify({
+                                images
+                            }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.success) {
+                                console.error('Failed to delete images:', data.message);
+                            }
+                        })
+                        .catch(error => console.error('Error deleting images:', error));
+                }
+            })
+            .catch(error => console.error('Error initializing CKEditor:', error));
+    </script>
 @endpush
-

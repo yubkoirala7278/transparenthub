@@ -24,10 +24,10 @@
                 <div class="card-body">
                     <h4 class="card-title font-weight-bold text-center" style="color:#2C3E50">{{ $news->title }} {{ optional($news->news_sources)->name ? '(' . optional($news->news_sources)->name . ')' : '' }}
                     </h4>
-                    <div class="text-center mb-4">
+                    {{-- <div class="text-center mb-4">
                         <img src="{{ asset($news->image) }}" alt="News Image" class="img-fluid rounded"
                             style="max-height: 300px; object-fit: cover;">
-                    </div>
+                    </div> --}}
                     <div class="card-text">
                         {!! $news->description !!}
                     </div>

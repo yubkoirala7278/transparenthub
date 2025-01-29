@@ -34,9 +34,19 @@
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-newspaper"></i></span><span class="pcoded-mtext">News</span></a>
                     <ul class="pcoded-submenu" style="padding: 0px">
+                        <li><a href="{{route('news.index')}}">News</a></li>
                         <li><a href="{{route('news_category.index')}}">Category</a></li>
                         <li><a href="{{route('news_source.index')}}">Source</a></li>
-                        <li><a href="{{route('news.index')}}">News</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-newspaper"></i></span><span class="pcoded-mtext">E-commerce</span></a>
+                    <ul class="pcoded-submenu" style="padding: 0px">
+                        <li><a href="">Category</a></li>
+                        <li><a href="">Sub Category</a></li>
+                        <li><a href="">Brands</a></li>
+                        <li><a href="">Products</a></li>
                     </ul>
                 </li>
 

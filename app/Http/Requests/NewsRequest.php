@@ -37,6 +37,7 @@ class NewsRequest extends FormRequest
                 'required',
                 'in:active,inactive'
             ],
+            'trending_news' => 'required|in:1,0',
         ];
         if ($this->isMethod('post')) { // Store method
             $rules['image'] = 'required|image|mimes:webp,jpeg,png,jpg,gif,svg|max:2048';

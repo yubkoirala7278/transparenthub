@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('image');
             $table->string('rss')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->unsignedBigInteger('views')->default(0);
+            $table->boolean('trending_news')->default(false);
             $table->timestamps();
         });
     }

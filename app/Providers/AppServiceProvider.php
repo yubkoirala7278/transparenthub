@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\NewsCategory;
 use App\Repositories\BlogRepository;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use App\Repositories\Interfaces\NewsRepositoryInterface;
@@ -25,5 +26,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Fetch all categories and share them with all views
+        view()->share('news_categories', NewsCategory::whereHas('news', function ($query) {
+            $query->where('status', 'active'); 
+        })->orderBy('name', 'asc')->get());
+        
     }
 }
