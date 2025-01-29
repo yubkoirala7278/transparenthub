@@ -26,6 +26,7 @@
 
     <script src="{{ asset('frontend/js/nepali.js') }}" type="text/javascript"></script>
     <script src="{{ asset('frontend/js/sound.js') }}"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- toastify css --}}
     @toastifyCss
     @yield('custom-css')

@@ -64,7 +64,7 @@ class NewsController extends Controller
     }
 
     // =========news with categories==========
-    public function newsWithCategories($category)
+    public function newsWithCategories($category, Request $request)
     {
         try {
             $categories = NewsCategory::whereHas('news', function ($query) {
@@ -91,6 +91,24 @@ class NewsController extends Controller
                     })->latest()->paginate(12);
             }
 
+            if ($request->ajax()) {
+                // Return news with FULL image URLs
+                $newsData = $news_with_same_category->map(function ($news) {
+                    return [
+                        'title' => $news->title,
+                        'slug' => $news->slug,
+                        'image' => asset($news->image),
+                        'url' => route('news.view', ['slug' => $news->slug]),
+                        'created_at' => $news->created_at,
+                    ];
+                });
+
+                return response()->json([
+                    'news' => $newsData,
+                    'next_page_url' => $news_with_same_category->nextPageUrl()
+                ]);
+            }
+
             return view('frontend.pages.news_with_category', [
                 'categories' => $categories,
                 'news_with_same_category_top_news' => $news_with_same_category_top_news,
@@ -100,32 +118,6 @@ class NewsController extends Controller
             ]);
         } catch (\Exception $exception) {
             return back()->with('error', 'Something went wrong. Please try again.');
-        }
-    }
-
-
-    // load more news from news category
-    public function loadMoreNews(Request $request, $category)
-    {
-        try {
-            if ($category === 'all_news') {
-                $news_with_same_category = News::where('status', 'active')
-                    ->latest()
-                    ->paginate(12, ['*'], 'page', $request->page);
-            } else {
-                $news_with_same_category = News::whereHas('news_categories', function ($query) use ($category) {
-                    $query->where('name', $category);
-                })->latest()->paginate(12, ['*'], 'page', $request->page);
-            }
-
-            $html = view('frontend.pages.news_list', compact('news_with_same_category'))->render();
-
-            return response()->json([
-                'html' => $html,
-                'hasMorePages' => $news_with_same_category->hasMorePages(),
-            ]);
-        } catch (\Exception $exception) {
-            return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
         }
     }
 
