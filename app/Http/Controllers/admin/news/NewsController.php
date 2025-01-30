@@ -7,14 +7,25 @@ use App\Http\Requests\NewsRequest;
 use App\Models\News;
 use App\Models\NewsCategory;
 use App\Models\NewsSource;
+use App\Repositories\Interfaces\NewsRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
+    private $newsRepository;
+
+    /**
+     * constructor
+     */
+    public function __construct(NewsRepositoryInterface $newsRepository)
+    {
+        $this->newsRepository = $newsRepository;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -36,10 +47,10 @@ class NewsController extends Controller
                         return $news->news_categories->name ?? 'N/A';
                     })
                     ->editColumn('trending_news', function ($news) {
-                       if($news->trending_news){
-                        return '<span class="badge badge-success">Yes</span>';
-                       }
-                       return '<span class="badge badge-danger">No</span>';
+                        if ($news->trending_news) {
+                            return '<span class="badge badge-success">Yes</span>';
+                        }
+                        return '<span class="badge badge-danger">No</span>';
                     })
                     ->addColumn('created_at', function ($news) {
                         return $news->created_at->format('F d, Y'); // Format the date
@@ -59,7 +70,7 @@ class NewsController extends Controller
                             ';
                         return $buttons;
                     })
-                    ->rawColumns(['status', 'image', 'action','trending_news']) // Allow HTML rendering
+                    ->rawColumns(['status', 'image', 'action', 'trending_news']) // Allow HTML rendering
                     ->make(true);
             }
 
@@ -90,26 +101,7 @@ class NewsController extends Controller
     public function store(NewsRequest $request)
     {
         try {
-            // Handle file upload for the image
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->storeAs(
-                    'public/news',
-                    uniqid() . '.' . $request->file('image')->getClientOriginalExtension()
-                );
-                // Replace 'public/' with 'Storage/' to store the desired path in the database
-                $imagePath = str_replace('public/', 'Storage/', $imagePath);
-            }
-            // Create the news record
-            News::create([
-                'title' => $request['title'],
-                'description' => $request['description'],
-                'image' => $imagePath,
-                'status' => $request['status'],
-                'news_categories_id' => $request['category'],
-                'news_sources_id' => $request['source'] ?? null,
-                'rss' => $request['rss'] ?? null,
-                'trending_news'=>$request['trending_news']
-            ]);
+            $this->newsRepository->storeNews($request);
             return redirect()->route('news.index')->with('success', 'News has been created successfully!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
@@ -160,35 +152,7 @@ class NewsController extends Controller
             if (!$news) {
                 return back()->with('error', 'News not found!');
             }
-            // Handle file upload for the news
-            if ($request->hasFile('image')) {
-                // Delete the old news image if it exists
-                if ($news->image && Storage::exists(str_replace('Storage/', 'public/', $news->image))) {
-                    Storage::delete(str_replace('Storage/', 'public/', $news->image));
-                }
-
-                $newsPath = $request->file('image')->storeAs(
-                    'public/news',
-                    uniqid() . '.' . $request->file('image')->getClientOriginalExtension()
-                );
-                // Replace 'public/' with 'Storage/' to store the desired path in the database
-                $newsPath = str_replace('public/', 'Storage/', $newsPath);
-            } else {
-                // Keep the old news image if no new one is uploaded
-                $newsPath = $news->image;
-            }
-
-            // Update the news record
-            $news->update([
-                'title' => $request['title'],
-                'description' => $request['description'],
-                'image' => $newsPath,
-                'status' => $request['status'],
-                'news_categories_id' => $request['category'],
-                'news_sources_id' => $request['source'] ?? null,
-                'rss' => $request['rss'] ?? null,
-                'trending_news'=>$request['trending_news']
-            ]);
+            $this->newsRepository->updateNews($request, $news);
             return redirect()->route('news.index')->with('success', 'News has been updated successfully!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
@@ -202,20 +166,11 @@ class NewsController extends Controller
     {
         try {
             $news = News::where('slug', $slug)->first();
-            if ($news) {
-                // Ensure the path is relative to the 'public' disk
-                $relativeNewsPath = str_replace('Storage/', 'public/', $news->image);
-
-                // Delete the news file if it exists
-                if ($news->image && Storage::exists($relativeNewsPath)) {
-                    Storage::delete($relativeNewsPath);
-                }
-
-                $news->delete();
-                return response()->json(['status' => 'success', 'message' => 'News deleted successfully']);
-            } else {
+            if(!$news){
                 return response()->json(['status' => 'error', 'message' => 'News not found']);
             }
+            $this->newsRepository->destroyNews($news);
+            return response()->json(['status' => 'success', 'message' => 'News deleted successfully']);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'error', 'message' => $th->getMessage()]);
         }
@@ -227,14 +182,42 @@ class NewsController extends Controller
     public function upload(Request $request): JsonResponse
     {
         if ($request->hasFile('upload')) {
-            $originName = $request->file('upload')->getClientOriginalName();
+            $image = $request->file('upload');
+
+            // Get the original file name and extension
+            $originName = $image->getClientOriginalName();
             $fileName = pathinfo($originName, PATHINFO_FILENAME);
-            $extension = $request->file('upload')->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
-            $request->file('upload')->move(public_path('media'), $fileName);
+            $extension = $image->getClientOriginalExtension();
+
+            // Generate a unique file name with WebP extension
+            $fileName = $fileName . '_' . time() . '.webp';
+
+            // Define the storage path (public directory for CKEditor images)
+            $path = public_path('media/' . $fileName);
+
+            // Process and compress the image
+            $img = Image::make($image)
+                ->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio(); // Maintain aspect ratio
+                    $constraint->upsize(); // Prevent upscaling
+                })
+                ->encode('webp', 80); // Convert to WebP format with 80% quality
+
+            // Save the image in the 'media' directory
+            $img->save($path);
+
+            // Get the URL of the uploaded image
             $url = asset('media/' . $fileName);
-            return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
+
+            // Return the response as required by CKEditor
+            return response()->json([
+                'fileName' => $fileName,
+                'uploaded' => 1,
+                'url' => $url
+            ]);
         }
+
+        return response()->json(['error' => 'No file uploaded.'], 400);
     }
     /**
      * delete  file from ck editor

@@ -10,20 +10,20 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{route('blogs.index')}}" style="color: #2C3E50">Blogs</a>
+                    <a href="{{ route('products_brand.index') }}" style="color: #2C3E50">Brands</a>
                 </li>
             </ul>
-            <a href="{{ route('blogs.create') }}" class="btn text-white btn-sm rounded-pill px-3 py-2"
+            <a href="{{ route('products_brand.create') }}" class="btn text-white btn-sm rounded-pill px-3 py-2"
                 style="background-color: #2C3E50">Create</a>
         </div>
         <div class="table-responsive">
-            <table class="table blog-datatable table-hover pt-3 w-100">
+            <table class="table brand-datatable table-hover pt-3 w-100">
                 <thead>
                     <tr>
                         <th>S.N:</th>
-                        <th>Title</th>
-                        <th>Image</th>
+                        <th>Brand</th>
                         <th>Status</th>
+                        <th>Image</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -40,19 +40,19 @@
 
 @section('modal')
     <!-- Modal for Image Preview -->
-    <div class="modal fade" id="blogModal" tabindex="-1" role="dialog" aria-labelledby="blogModalLabel"
+    <div class="modal fade" id="brandModal" tabindex="-1" role="dialog" aria-labelledby="brandModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="blogModalLabel">Blog Preview</h5>
+                    <h5 class="modal-title" id="brandModalLabel">Brand Preview</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body text-center">
                     <!-- Modal Image -->
-                    <img id="modal-blog" src="" alt="Blog Preview" class="img-fluid">
+                    <img id="modal-brand" src="" alt="Brand Preview" class="img-fluid">
                 </div>
             </div>
         </div>
@@ -62,36 +62,34 @@
 @push('script')
     <script type="text/javascript">
         $(document).ready(function() {
-            // Initialize DataTable with AJAX
-            var table = $('.blog-datatable').DataTable({
+            // =======Initialize DataTable with AJAX=======
+            var table = $('.brand-datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 searchDelay: 1000,
-                ajax: "{{ route('blogs.index') }}", // Data source URL
-                columns: [{
+                ajax: "{{ route('products_brand.index') }}",
+                columns: [
+                    {
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         orderable: false,
                         searchable: false,
-                         className: 'text-center'
+                        className: 'text-center'
                     },
                     {
-                        data: 'title',
-                        name: 'title',
-                        render: function(data, type, row) {
-                            return `<div style="word-wrap: break-word; white-space: normal;">${data}</div>`;
-                        }
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        className: 'text-center'
                     },
                     {
                         data: 'image',
                         name: 'image',
                         orderable: false,
                         searchable: false,
-                        className: 'text-center'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
                         className: 'text-center'
                     },
                     {
@@ -104,23 +102,65 @@
                     {
                         data: 'created_at',
                         name: 'created_at',
-                        visible: false
-                    }
+                        visible: false // Hide this column from the table
+                    },
+                   
                 ],
                 order: [
-                    [5, 'desc']
+                    [5, 'desc'] // Sort by 'created_at'
                 ],
-                scrollX: true, // Enables horizontal scrolling
-                responsive: true, // Adds responsive behavior
-                autoWidth: false, // Prevents automatic column width adjustments
+                responsive: true,
                 language: {
-                    emptyTable: "No data available in the table",
+                    emptyTable: "No data available",
                     processing: "Loading..."
                 }
             });
 
-            // Handle delete with SweetAlert2
-            $(document).on('click', '.delete-btn', function() {
+            // =====toggle status===================
+            $(document).on('click', '.toggle-status-btn', function() {
+                const slug = $(this).data('slug');
+                const currentStatus = $(this).data('status');
+                const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `Do you want to change the status to ${newStatus}?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, change it!',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/admin/products_brand/toggle-status/${slug}`,
+                            type: 'PATCH',
+                            data: {
+                                status: newStatus,
+                                _token: '{{ csrf_token() }}',
+                            },
+                            success: function(response) {
+                                Swal.fire('Success!', response.message, 'success');
+                                table.ajax.reload(); // Reload DataTable after delete
+                            },
+                            error: function(xhr) {
+                                Swal.fire('Error!', 'Failed to update status.',
+                                    'error');
+                            },
+                        });
+                    }
+                });
+            });
+
+            //display image in modal
+            $(document).on('click', '.brand-image', function() {
+                var brandUrl = $(this).data('url'); // Get the image URL from the data-url attribute
+                $('#modal-brand').attr('src', brandUrl); // Set the image source in the modal
+                $('#brandModal').modal('show'); // Show the modal using Bootstrap 4
+            });
+
+             // Handle delete with SweetAlert2
+             $(document).on('click', '.delete-btn', function() {
                 var slug = $(this).data('slug');
 
                 Swal.fire({
@@ -135,7 +175,7 @@
                     if (result.isConfirmed) {
                         // Perform delete via AJAX
                         $.ajax({
-                            url: '/admin/blogs/' + slug,
+                            url: '/admin/products_brand/' + slug,
                             type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}'
@@ -144,7 +184,7 @@
                                 if (response.status === 'success') {
                                     Swal.fire(
                                         'Deleted!',
-                                        'Your blog has been deleted.',
+                                        'Your brand has been deleted.',
                                         'success'
                                     );
                                     table.ajax
@@ -167,13 +207,6 @@
                         });
                     }
                 });
-            });
-
-            //display image in modal
-            $(document).on('click', '.blog-image', function() {
-                var blogUrl = $(this).data('url'); // Get the image URL from the data-url attribute
-                $('#modal-blog').attr('src', blogUrl); // Set the image source in the modal
-                $('#blogModal').modal('show'); // Show the modal using Bootstrap 4
             });
         });
     </script>

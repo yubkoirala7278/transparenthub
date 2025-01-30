@@ -5,12 +5,22 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogRequest;
 use App\Models\Blog;
+use App\Repositories\Interfaces\BlogRepositoryInterface;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
+    private $blogRepository;
+
+    /**
+     * constructor
+     */
+    public function __construct(BlogRepositoryInterface $blogRepository)
+    {
+        $this->blogRepository = $blogRepository;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -69,22 +79,7 @@ class BlogController extends Controller
     public function store(BlogRequest $request)
     {
         try {
-            // Handle file upload for the image
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->storeAs(
-                    'public/blog',
-                    uniqid() . '.' . $request->file('image')->getClientOriginalExtension()
-                );
-                // Replace 'public/' with 'Storage/' to store the desired path in the database
-                $imagePath = str_replace('public/', 'Storage/', $imagePath);
-            }
-            // Create the blog record
-            Blog::create([
-                'title' => $request['title'],
-                'image' => $imagePath,
-                'description' => $request['description'],
-                'status' => $request['status']
-            ]);
+            $this->blogRepository->store($request);
             return redirect()->route('blogs.index')->with('success', 'Blog has been created successfully!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
@@ -134,36 +129,13 @@ class BlogController extends Controller
             if (!$blog) {
                 return back()->with('error', 'Blog not found!');
             }
-            // Handle file upload for the blog
-            if ($request->hasFile('image')) {
-                // Delete the old blog image if it exists
-                if ($blog->image && Storage::exists(str_replace('Storage/', 'public/', $blog->image))) {
-                    Storage::delete(str_replace('Storage/', 'public/', $blog->image));
-                }
-
-                $blogPath = $request->file('image')->storeAs(
-                    'public/blog',
-                    uniqid() . '.' . $request->file('image')->getClientOriginalExtension()
-                );
-                // Replace 'public/' with 'Storage/' to store the desired path in the database
-                $blogPath = str_replace('public/', 'Storage/', $blogPath);
-            } else {
-                // Keep the old blog image if no new one is uploaded
-                $blogPath = $blog->image;
-            }
-
-            // Update the blog record
-            $blog->update([
-                'title' => $request['title'],
-                'image' => $blogPath,
-                'description' => $request['description'],
-                'status' => $request['status']
-            ]);
+            $this->blogRepository->update($request,$blog);
             return redirect()->route('blogs.index')->with('success', 'Blog has been updated successfully!');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -172,20 +144,11 @@ class BlogController extends Controller
     {
         try {
             $blog = Blog::where('slug', $slug)->first();
-            if ($blog) {
-                // Ensure the path is relative to the 'public' disk
-                $relativeBlogPath = str_replace('Storage/', 'public/', $blog->image);
-
-                // Delete the blog file if it exists
-                if ($blog->image && Storage::exists($relativeBlogPath)) {
-                    Storage::delete($relativeBlogPath);
-                }
-
-                $blog->delete();
-                return response()->json(['status' => 'success', 'message' => 'Blog deleted successfully']);
-            } else {
+            if(!$blog){
                 return response()->json(['status' => 'error', 'message' => 'Blog not found']);
             }
+            $this->blogRepository->destroy($blog);
+            return response()->json(['status' => 'success', 'message' => 'Blog deleted successfully']);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'error', 'message' => $th->getMessage()]);
         }

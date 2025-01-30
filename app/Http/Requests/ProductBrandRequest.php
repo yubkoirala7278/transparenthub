@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class NewsRequest extends FormRequest
+class ProductBrandRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,22 +23,8 @@ class NewsRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'title' => 'required',
-            'description' => 'required',
-            'rss' => 'nullable',
-            'category' => [
-                'required',
-                'exists:news_categories,id',
-            ],
-            'source' => [
-                'nullable',
-                'exists:news_sources,id',
-            ],
-            'status' =>  [
-                'required',
-                'in:active,inactive'
-            ],
-            'trending_news' => 'required|in:1,0',
+            'name' => ['required', 'max:255', Rule::unique('product_brands', 'name')->ignore($this->route('products_brand'), 'slug')],
+            'status' => 'required|in:active,inactive',
         ];
         if ($this->isMethod('post')) { // Store method
             $rules['image'] = 'required|image|mimes:webp,jpeg,png,jpg,gif,svg';
@@ -50,10 +37,8 @@ class NewsRequest extends FormRequest
     public function messages()
     {
         return [
-            'category.required' => 'Please select a category.',
-            'category.exists' => 'The selected category is invalid.',
-            'source.exists' => 'The selected source is invalid.',
-            'status.in' => 'The status must be either active or inactive.'
+            'name.required' => 'Brand is required',
+            'status.in' => 'The selected status is invalid. It must be either active or inactive.',
         ];
     }
 }

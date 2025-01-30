@@ -2,5 +2,7 @@
 namespace App\Repositories\Interfaces;
 
 Interface NewsRepositoryInterface{
-    public function all();
+    public function storeNews($request);
+    public function updateNews($request,$news);
+    public function destroyNews($news);
 }

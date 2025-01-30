@@ -6,7 +6,9 @@ use App\Models\NewsCategory;
 use App\Repositories\BlogRepository;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use App\Repositories\Interfaces\NewsRepositoryInterface;
+use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\NewsRepository;
+use App\Repositories\ProductRepository;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 
@@ -18,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(BlogRepositoryInterface::class,BlogRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class,ProductRepository::class);
         $this->app->bind(NewsRepositoryInterface::class,NewsRepository::class);
     }
 

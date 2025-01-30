@@ -30,9 +30,9 @@ class BlogRequest extends FormRequest
             ],
         ];
         if ($this->isMethod('post')) { // Store method
-            $rules['image'] = 'required|image|mimes:webp,jpeg,png,jpg,gif,svg|max:2048';
+            $rules['image'] = 'required|image|mimes:webp,jpeg,png,jpg,gif,svg';
         } elseif ($this->isMethod('put') || $this->isMethod('patch')) { // Update method
-            $rules['image'] = 'nullable|image|mimes:webp,jpeg,png,jpg,gif,svg|max:2048';
+            $rules['image'] = 'nullable|image|mimes:webp,jpeg,png,jpg,gif,svg';
         }
 
         return $rules;
