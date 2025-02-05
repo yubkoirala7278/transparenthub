@@ -43,12 +43,12 @@
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-newspaper"></i></span><span class="pcoded-mtext">E-commerce</span></a>
                     <ul class="pcoded-submenu" style="padding: 0px">
+                        <li><a href="{{route('products.index')}}">Products</a></li>
                         <li><a href="{{route('products_category.index')}}">Category</a></li>
                         <li><a href="{{route('products_sub_category.index')}}">Sub Category</a></li>
                         <li><a href="{{route('products_brand.index')}}">Brands</a></li>
                         <li><a href="{{route('color.index')}}">Color</a></li>
                         <li><a href="{{route('size.index')}}">Size</a></li>
-                        <li><a href="{{route('products.index')}}">Products</a></li>
                     </ul>
                 </li>
 

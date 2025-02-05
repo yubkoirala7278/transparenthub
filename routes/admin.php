@@ -22,6 +22,7 @@ Route::patch('/products_brand/toggle-status/{slug}', [BrandController::class, 't
 Route::patch('/products_color/toggle-status/{slug}', [ColorController::class, 'toggleStatus'])->name('product_color.toggle-status');
 Route::patch('/products_size/toggle-status/{slug}', [SizeController::class, 'toggleStatus'])->name('product_size.toggle-status');
 Route::patch('/products/toggle-status/{slug}', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
+Route::get('/get-subcategories', [ProductController::class, 'getSubCategories'])->name('getSubCategories');
 
 Route::resources([
     'blogs'=>BlogController::class,

@@ -53,7 +53,7 @@ class ProductController extends Controller
                         ?? 'N/A';
                 })
                 ->editColumn('is_featured', function ($product) {
-                    return $product->is_featured=='Yes'
+                    return $product->is_featured == 'Yes'
                         ? '<span class="badge badge-success">Yes</span>'
                         : '<span class="badge badge-danger">No</span>';
                 })
@@ -84,7 +84,7 @@ class ProductController extends Controller
                     <button class="btn btn-danger btn-sm delete-btn" data-slug="' . $product->slug . '" title="delete product"><i class="fa-solid fa-trash"></i></button>
                 ';
                 })
-                ->rawColumns(['track_qty','is_featured','status', 'action', 'feature_image'])
+                ->rawColumns(['track_qty', 'is_featured', 'status', 'action', 'feature_image'])
                 ->make(true);
         }
 
@@ -103,7 +103,7 @@ class ProductController extends Controller
             $brands = ProductBrand::where('status', 'active')->orderBy('name', 'asc')->get();
             $colors = ProductColor::where('status', 'active')->orderBy('name', 'asc')->get();
             $sizes = ProductSize::where('status', 'active')->orderBy('name', 'asc')->get();
-            return view('backend.products.product.create', compact('categories', 'sub_categories', 'brands', 'colors','sizes'));
+            return view('backend.products.product.create', compact('categories', 'sub_categories', 'brands', 'colors', 'sizes'));
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -129,7 +129,7 @@ class ProductController extends Controller
     {
         try {
             $product = Product::where('slug', $slug)->first();
-            
+
             if (!$product) {
                 return back()->with('error', 'Product not found!');
             }
@@ -146,7 +146,7 @@ class ProductController extends Controller
     {
         try {
             $product = Product::where('slug', $slug)->first();
-            
+
             if (!$product) {
                 return back()->with('error', 'Product not found!');
             }
@@ -155,7 +155,7 @@ class ProductController extends Controller
             $brands = ProductBrand::where('status', 'active')->orderBy('name', 'asc')->get();
             $colors = ProductColor::where('status', 'active')->orderBy('name', 'asc')->get();
             $sizes = ProductSize::where('status', 'active')->orderBy('name', 'asc')->get();
-            return view('backend.products.product.edit', compact('product','categories','sub_categories','brands','colors','sizes'));
+            return view('backend.products.product.edit', compact('product', 'categories', 'sub_categories', 'brands', 'colors', 'sizes'));
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -186,7 +186,7 @@ class ProductController extends Controller
     {
         try {
             $product = Product::where('slug', $slug)->first();
-            if(!$product){
+            if (!$product) {
                 return response()->json(['status' => 'error', 'message' => 'Product not found']);
             }
             $this->productRepository->destroyProduct($product);
@@ -283,5 +283,18 @@ class ProductController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => 'Some images could not be deleted.', 'errors' => $errors]);
+    }
+
+    /**
+     * get product sub_category from category
+     */
+    public function getSubCategories(Request $request)
+    {
+        $subCategories = ProductSubCategory::where('product_categories_id', $request->category_id)
+            ->where('status', 'active')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        return response()->json($subCategories);
     }
 }

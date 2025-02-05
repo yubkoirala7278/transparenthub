@@ -201,40 +201,30 @@
                                                     class="text-danger">*</span></label>
                                             <select class="form-control" name="category_id" id="category_id">
                                                 <option selected disabled>Select Product Category</option>
-                                                @if (count($categories) > 0)
-                                                    @foreach ($categories as $category)
-                                                        <option value="{{ $category->id }}"
-                                                            {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                                            {{ $category->name }}
-                                                        </option>
-                                                    @endforeach
-                                                @endif
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}"
+                                                        {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                        {{ $category->name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
-                                            @if ($errors->has('category_id'))
-                                                <span class="text-danger">{{ $errors->first('category_id') }}</span>
-                                            @endif
+                                            @error('category_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
 
                                         {{-- Sub Category --}}
-                                        <div class="form-group">
+                                        <div class="form-group" id="sub_category_div" style="display: none;">
                                             <label for="sub_category_id" class="font-weight-bold h5">Product Sub
                                                 Category</label>
                                             <select class="form-control" name="sub_category_id" id="sub_category_id">
                                                 <option selected disabled>Select Product Sub Category</option>
-                                                @if (count($sub_categories) > 0)
-                                                    @foreach ($sub_categories as $sub_category)
-                                                        <option value="{{ $sub_category->id }}"
-                                                            {{ old('sub_category_id') == $sub_category->id ? 'selected' : '' }}>
-                                                            {{ $sub_category->name }}
-                                                        </option>
-                                                    @endforeach
-                                                @endif
                                             </select>
-
-                                            @if ($errors->has('sub_category_id'))
-                                                <span class="text-danger">{{ $errors->first('sub_category_id') }}</span>
-                                            @endif
+                                            @error('sub_category_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="card shadow bg-white rounded ">
@@ -340,44 +330,82 @@
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        // =====display and remove feature image when uploaded=======
-        document.getElementById("feature_image").addEventListener("change", function(event) {
-            let file = event.target.files[0];
-
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("imagePreview").src = e.target.result;
-                    document.getElementById("imagePreviewContainer").style.display = "block";
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById("removeImage").addEventListener("click", function() {
-            let inputField = document.getElementById("image");
-            let previewContainer = document.getElementById("imagePreviewContainer");
-
-            // Reset input field
-            inputField.value = "";
-
-            // Hide preview container
-            previewContainer.style.display = "none";
-        });
-    </script>
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#shipping_returns'), {
-                removePlugins: ['Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload',
-                    'Indent', 'ImageUpload', 'MediaEmbed'
-                ],
-            })
-            .catch(error => {
-                console.error(error.stack);
-            });
-    </script>
-    <script>
         $(document).ready(function() {
+            // ===get product sub category when category is selected=======
+            $('#category_id').on('change', function() {
+                var categoryId = $(this).val();
+
+                if (categoryId) {
+                    $.ajax({
+                        url: "{{ route('getSubCategories') }}", // Define this route in web.php
+                        type: "GET",
+                        data: {
+                            category_id: categoryId
+                        },
+                        success: function(response) {
+                            $('#sub_category_id').empty().append(
+                                '<option selected disabled>Select Product Sub Category</option>'
+                                );
+
+                            if (response.length > 0) {
+                                $.each(response, function(key, subCategory) {
+                                    $('#sub_category_id').append('<option value="' +
+                                        subCategory.id + '">' + subCategory.name +
+                                        '</option>');
+                                });
+                                $('#sub_category_div')
+                            .show(); // Show subcategory div if subcategories exist
+                            } else {
+                                $('#sub_category_div')
+                            .hide(); // Hide subcategory div if no subcategories
+                            }
+                        }
+                    });
+                } else {
+                    $('#sub_category_div').hide(); // Hide subcategory div if no category is selected
+                }
+            });
+            // ===end of getting product sub category when categoru is selected==
+
+            // ========ck editor for product Shipping & Returns Protocol========
+            ClassicEditor
+                .create(document.querySelector('#shipping_returns'), {
+                    removePlugins: ['Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload',
+                        'Indent', 'ImageUpload', 'MediaEmbed'
+                    ],
+                })
+                .catch(error => {
+                    console.error(error.stack);
+                });
+            // ==========end of ck editor for Shipping & Returns Protocol======================
+
+            // ==========display and remove feature image when uploaded=======
+            document.getElementById("feature_image").addEventListener("change", function(event) {
+                let file = event.target.files[0];
+
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById("imagePreview").src = e.target.result;
+                        document.getElementById("imagePreviewContainer").style.display = "block";
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById("removeImage").addEventListener("click", function() {
+                let inputField = document.getElementById("feature_image");
+                let previewContainer = document.getElementById("imagePreviewContainer");
+
+                // Reset input field
+                inputField.value = "";
+
+                // Hide preview container
+                previewContainer.style.display = "none";
+            });
+            // ==========end of displaying and removing feature image when uploaded=======
+
+            // ========select multiple products color or size in select field=========
             function initSelect2WithSelectAll(selectId) {
                 $(selectId).select2({
                     placeholder: 'Select Product',
@@ -405,67 +433,70 @@
                     }
                 });
             }
-
             // Initialize Select2 for color and size fields
             initSelect2WithSelectAll('#color_id');
             initSelect2WithSelectAll('#size_id');
-        });
-    </script>
+            // ==========end of selecting multiple products color or size in select field=====
 
+            // ========ck editor for product description========
+            ClassicEditor
+                .create(document.querySelector('#description'), {
+                    ckfinder: {
+                        uploadUrl: '{{ route('ckeditor.upload.product') . '?_token=' . csrf_token() }}',
+                    },
+                })
+                .then(editor => {
+                    let previousImages = [];
 
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#description'), {
-                ckfinder: {
-                    uploadUrl: '{{ route('ckeditor.upload.product') . '?_token=' . csrf_token() }}',
-                },
-            })
-            .then(editor => {
-                let previousImages = [];
+                    // Detect content changes in CKEditor
+                    editor.model.document.on('change:data', () => {
+                        const content = editor.getData();
+                        const currentImages = extractImageSources(content);
 
-                // Detect content changes in CKEditor
-                editor.model.document.on('change:data', () => {
-                    const content = editor.getData();
-                    const currentImages = extractImageSources(content);
+                        // Compare previous and current images to find deleted ones
+                        const deletedImages = previousImages.filter(img => !currentImages.includes(
+                        img));
+                        if (deletedImages.length > 0) {
+                            deleteImagesFromServer(deletedImages);
+                        }
 
-                    // Compare previous and current images to find deleted ones
-                    const deletedImages = previousImages.filter(img => !currentImages.includes(img));
-                    if (deletedImages.length > 0) {
-                        deleteImagesFromServer(deletedImages);
+                        previousImages = currentImages; // Update the image list
+                    });
+
+                    // Extract image URLs from content
+                    function extractImageSources(content) {
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = content;
+                        const images = Array.from(tempDiv.querySelectorAll('img')).map(img => img.getAttribute(
+                            'src'));
+                        return images;
                     }
 
-                    previousImages = currentImages; // Update the image list
+                    // Send a request to delete images from the server
+                    function deleteImagesFromServer(images) {
+                        fetch('{{ route('ckeditor.delete.product') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                },
+                                body: JSON.stringify({
+                                    images
+                                }),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.success) {
+                                    console.error('Failed to delete images:', data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error deleting images:', error));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error initializing CKEditor:', error)
                 });
-
-                // Extract image URLs from content
-                function extractImageSources(content) {
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = content;
-                    const images = Array.from(tempDiv.querySelectorAll('img')).map(img => img.getAttribute('src'));
-                    return images;
-                }
-
-                // Send a request to delete images from the server
-                function deleteImagesFromServer(images) {
-                    fetch('{{ route('ckeditor.delete.product') }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            },
-                            body: JSON.stringify({
-                                images
-                            }),
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (!data.success) {
-                                console.error('Failed to delete images:', data.message);
-                            }
-                        })
-                        .catch(error => console.error('Error deleting images:', error));
-                }
-            })
-            .catch(error => console.error('Error initializing CKEditor:', error));
+            // =========end of ckeditor for product description=======
+        });
     </script>
 @endpush

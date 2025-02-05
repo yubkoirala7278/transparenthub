@@ -125,10 +125,9 @@
                                                 Price</label>
                                             <input type="number" class="form-control" id="compare_price"
                                                 name="compare_price" placeholder="Enter Product Compare Price"
-                                                value="{{ old('compare_price',$product->compare_price) }}">
+                                                value="{{ old('compare_price', $product->compare_price) }}">
                                             @if ($errors->has('compare_price'))
-                                                <span
-                                                    class="text-danger">{{ $errors->first('compare_price') }}</span>
+                                                <span class="text-danger">{{ $errors->first('compare_price') }}</span>
                                             @endif
                                         </div>
                                         <span class="text-muted">To show a reduced price, move the product’s original price
@@ -212,14 +211,12 @@
                                             </label>
                                             <select class="form-control" name="category_id" id="category_id">
                                                 <option selected disabled>Select Product Category</option>
-                                                @if (count($categories) > 0)
-                                                    @foreach ($categories as $category)
-                                                        <option value="{{ $category->id }}"
-                                                            {{ old('category_id', isset($product) ? $product->category_id : '') == $category->id ? 'selected' : '' }}>
-                                                            {{ $category->name }}
-                                                        </option>
-                                                    @endforeach
-                                                @endif
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}"
+                                                        {{ old('category_id', isset($product) ? $product->category_id : '') == $category->id ? 'selected' : '' }}>
+                                                        {{ $category->name }}
+                                                    </option>
+                                                @endforeach
                                             </select>
 
                                             @if ($errors->has('category_id'))
@@ -228,20 +225,12 @@
                                         </div>
 
                                         {{-- Sub Category --}}
-                                        <div class="form-group">
+                                        <div class="form-group" id="sub_category_div" style="display: none;">
                                             <label for="sub_category_id" class="font-weight-bold h5">
                                                 Product Sub Category
                                             </label>
                                             <select class="form-control" name="sub_category_id" id="sub_category_id">
                                                 <option selected disabled>Select Product Sub Category</option>
-                                                @if (count($sub_categories) > 0)
-                                                    @foreach ($sub_categories as $sub_category)
-                                                        <option value="{{ $sub_category->id }}"
-                                                            {{ old('sub_category_id', isset($product) ? $product->sub_category_id : '') == $sub_category->id ? 'selected' : '' }}>
-                                                            {{ $sub_category->name }}
-                                                        </option>
-                                                    @endforeach
-                                                @endif
                                             </select>
 
                                             @if ($errors->has('sub_category_id'))
@@ -358,154 +347,183 @@
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        // =====display and remove feature image when uploaded=======
-        document.getElementById("feature_image").addEventListener("change", function(event) {
-            let file = event.target.files[0];
+        $(document).ready(function() {
+            // =======get product sub categories from categories===========
+            var selectedCategoryId = $('#category_id').val();
+            var selectedSubCategoryId =
+                "{{ old('sub_category_id', isset($product) ? $product->sub_category_id : '') }}";
 
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("imagePreview").src = e.target.result;
-                    document.getElementById("imagePreviewContainer").style.display = "block";
-                };
-                reader.readAsDataURL(file);
+            function fetchSubCategories(categoryId, selectedSubCategory = null) {
+                if (categoryId) {
+                    $.ajax({
+                        url: "{{ route('getSubCategories') }}", // Define this route in web.php
+                        type: "GET",
+                        data: {
+                            category_id: categoryId
+                        },
+                        success: function(response) {
+                            $('#sub_category_id').empty().append(
+                                '<option selected disabled>Select Product Sub Category</option>');
+
+                            if (response.length > 0) {
+                                $.each(response, function(key, subCategory) {
+                                    let selected = subCategory.id == selectedSubCategory ?
+                                        'selected' : '';
+                                    $('#sub_category_id').append('<option value="' + subCategory
+                                        .id + '" ' + selected + '>' + subCategory.name +
+                                        '</option>');
+                                });
+                                $('#sub_category_div').show();
+                            } else {
+                                $('#sub_category_div').hide();
+                            }
+                        }
+                    });
+                } else {
+                    $('#sub_category_div').hide();
+                }
             }
-        });
 
-        document.getElementById("removeImage").addEventListener("click", function() {
-            let inputField = document.getElementById("image");
-            let previewContainer = document.getElementById("imagePreviewContainer");
-
-            // Reset input field
-            inputField.value = "";
-
-            // Hide preview container
-            previewContainer.style.display = "none";
-        });
-    </script>
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#shipping_returns'), {
-                removePlugins: ['Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload',
-                    'Indent', 'ImageUpload', 'MediaEmbed'
-                ],
-            })
-            .catch(error => {
-                console.error(error.stack);
-            });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#color_id').select2({
-                placeholder: 'Select Product Colors',
-                allowClear: true,
-                closeOnSelect: false
+            // Fetch subcategories on category change
+            $('#category_id').on('change', function() {
+                fetchSubCategories($(this).val());
             });
 
-            // Add "Select All" functionality
-            var selectAllOption = new Option('Select All', 'select_all', false, false);
-            $('#color_id').prepend(selectAllOption); // Prepend "Select All" option
+            // Preload subcategories if a category is already selected
+            if (selectedCategoryId) {
+                fetchSubCategories(selectedCategoryId, selectedSubCategoryId);
+            }
+            // =======end of getting product sub categories from categories===
+            // ========ck editor for shipping returns and protocols============
+            ClassicEditor
+                .create(document.querySelector('#shipping_returns'), {
+                    removePlugins: ['Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload',
+                        'Indent', 'ImageUpload', 'MediaEmbed'
+                    ],
+                })
+                .catch(error => {
+                    console.error(error.stack);
+                });
+            // ========end of ck editor for shipping returns and protocols============
 
-            // Handle "Select All" functionality
-            $('#color_id').on('select2:select', function(e) {
-                if (e.params.data.id === 'select_all') {
-                    $('#color_id > option').prop('selected', true);
-                    $('#color_id').trigger('change');
+            // =====display and remove feature image when uploaded=======
+            document.getElementById("feature_image").addEventListener("change", function(event) {
+                let file = event.target.files[0];
+
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById("imagePreview").src = e.target.result;
+                        document.getElementById("imagePreviewContainer").style.display = "block";
+                    };
+                    reader.readAsDataURL(file);
                 }
             });
 
-            // Handle deselecting "Select All" functionality
-            $('#color_id').on('select2:unselect', function(e) {
-                if (e.params.data.id === 'select_all') {
-                    $('#color_id > option').prop('selected', false);
-                    $('#color_id').trigger('change');
-                }
+            document.getElementById("removeImage").addEventListener("click", function() {
+                let inputField = document.getElementById("feature_image");
+                let previewContainer = document.getElementById("imagePreviewContainer");
+
+                // Reset input field
+                inputField.value = "";
+
+                // Hide preview container
+                previewContainer.style.display = "none";
             });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#size_id').select2({
-                placeholder: 'Select Product Sizes',
-                allowClear: true,
-                closeOnSelect: false
-            });
+            // =====end of displaying and removing feature image when uploaded=======
 
-            // Add "Select All" functionality
-            var selectAllOption = new Option('Select All', 'select_all', false, false);
-            $('#size_id').prepend(selectAllOption); // Prepend "Select All" option
 
-            // Handle "Select All" functionality
-            $('#size_id').on('select2:select', function(e) {
-                if (e.params.data.id === 'select_all') {
-                    $('#size_id > option').prop('selected', true);
-                    $('#size_id').trigger('change');
-                }
-            });
-
-            // Handle deselecting "Select All" functionality
-            $('#size_id').on('select2:unselect', function(e) {
-                if (e.params.data.id === 'select_all') {
-                    $('#size_id > option').prop('selected', false);
-                    $('#size_id').trigger('change');
-                }
-            });
-        });
-    </script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#description'), {
-                ckfinder: {
-                    uploadUrl: '{{ route('ckeditor.upload.product') . '?_token=' . csrf_token() }}',
-                },
-            })
-            .then(editor => {
-                let previousImages = [];
-
-                // Detect content changes in CKEditor
-                editor.model.document.on('change:data', () => {
-                    const content = editor.getData();
-                    const currentImages = extractImageSources(content);
-
-                    // Compare previous and current images to find deleted ones
-                    const deletedImages = previousImages.filter(img => !currentImages.includes(img));
-                    if (deletedImages.length > 0) {
-                        deleteImagesFromServer(deletedImages);
-                    }
-
-                    previousImages = currentImages; // Update the image list
+            // =======select multiple color and size of product=======
+            function initSelect2(selectId, placeholderText) {
+                $(selectId).select2({
+                    placeholder: placeholderText,
+                    allowClear: true,
+                    closeOnSelect: false
                 });
 
-                // Extract image URLs from content
-                function extractImageSources(content) {
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = content;
-                    const images = Array.from(tempDiv.querySelectorAll('img')).map(img => img.getAttribute('src'));
-                    return images;
-                }
+                // Add "Select All" option
+                var selectAllOption = new Option('Select All', 'select_all', false, false);
+                $(selectId).prepend(selectAllOption);
 
-                // Send a request to delete images from the server
-                function deleteImagesFromServer(images) {
-                    fetch('{{ route('ckeditor.delete.product') }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            },
-                            body: JSON.stringify({
-                                images
-                            }),
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (!data.success) {
-                                console.error('Failed to delete images:', data.message);
-                            }
-                        })
-                        .catch(error => console.error('Error deleting images:', error));
-                }
-            })
-            .catch(error => console.error('Error initializing CKEditor:', error));
+                // Handle "Select All" functionality
+                $(selectId).on('select2:select', function(e) {
+                    if (e.params.data.id === 'select_all') {
+                        $(selectId).find('option').prop('selected', true);
+                        $(selectId).trigger('change');
+                    }
+                });
+
+                // Handle deselecting "Select All" functionality
+                $(selectId).on('select2:unselect', function(e) {
+                    if (e.params.data.id === 'select_all') {
+                        $(selectId).find('option').prop('selected', false);
+                        $(selectId).trigger('change');
+                    }
+                });
+            }
+
+            // Initialize Select2 for color and size dropdowns
+            initSelect2('#color_id', 'Select Product Colors');
+            initSelect2('#size_id', 'Select Product Sizes');
+            // =====end of selecting multiple color and size of product======
+
+            // =======ck editor for product description===========
+            ClassicEditor
+                .create(document.querySelector('#description'), {
+                    ckfinder: {
+                        uploadUrl: '{{ route('ckeditor.upload.product') . '?_token=' . csrf_token() }}',
+                    },
+                })
+                .then(editor => {
+                    let previousImages = [];
+
+                    // Detect content changes in CKEditor
+                    editor.model.document.on('change:data', () => {
+                        const content = editor.getData();
+                        const currentImages = extractImageSources(content);
+
+                        // Compare previous and current images to find deleted ones
+                        const deletedImages = previousImages.filter(img => !currentImages.includes(
+                            img));
+                        if (deletedImages.length > 0) {
+                            deleteImagesFromServer(deletedImages);
+                        }
+
+                        previousImages = currentImages; // Update the image list
+                    });
+
+                    // Extract image URLs from content
+                    function extractImageSources(content) {
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = content;
+                        const images = Array.from(tempDiv.querySelectorAll('img')).map(img => img.getAttribute(
+                            'src'));
+                        return images;
+                    }
+
+                    // Send a request to delete images from the server
+                    function deleteImagesFromServer(images) {
+                        fetch('{{ route('ckeditor.delete.product') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                },
+                                body: JSON.stringify({
+                                    images
+                                }),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.success) {
+                                    console.error('Failed to delete images:', data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error deleting images:', error));
+                    }
+                })
+                .catch(error => console.error('Error initializing CKEditor:', error));
+            // =====end of ck editor for product description========
+        });
     </script>
 @endpush
