@@ -102,7 +102,7 @@ class SubCategoryController extends Controller
                 return back()->with('error', 'Sub Category not found!');
             }
             $categories = ProductCategory::where('status', 'active')->orderBy('name', 'asc')->get();
-            return view('backend.products.sub_category.edit', compact('sub_category','categories'));
+            return view('backend.products.sub_category.edit', compact('sub_category', 'categories'));
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -137,16 +137,27 @@ class SubCategoryController extends Controller
     {
         try {
             $sub_category = ProductSubCategory::where('slug', $slug)->first();
-            if ($sub_category) {
-                $sub_category->delete();
-                return response()->json(['status' => 'success', 'message' => 'Sub Category deleted successfully']);
-            } else {
+
+            if (!$sub_category) {
                 return response()->json(['status' => 'error', 'message' => 'Sub Category not found']);
             }
+
+            // Check if subcategory has related products
+            if ($sub_category->products()->exists()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Cannot delete subcategory. It has associated products.'
+                ]);
+            }
+
+            $sub_category->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Sub Category deleted successfully']);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'error', 'message' => $th->getMessage()]);
         }
     }
+
 
     /**
      * toggle status

@@ -131,15 +131,27 @@ class CategoryController extends Controller
     {
         try {
             $category = ProductCategory::where('slug', $slug)->first();
-            if(!$category){
+    
+            if (!$category) {
                 return response()->json(['status' => 'error', 'message' => 'Category not found']);
             }
+    
+            // Check if category has related products or subcategories
+            if ($category->products()->exists() || $category->subCategories()->exists()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Cannot delete category. It has associated products or subcategories.'
+                ]);
+            }
+    
             $this->productRepository->destroyProductCategory($category);
+    
             return response()->json(['status' => 'success', 'message' => 'Category deleted successfully']);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'error', 'message' => $th->getMessage()]);
         }
     }
+    
 
     /**
      * toggle status

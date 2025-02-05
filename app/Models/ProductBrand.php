@@ -34,4 +34,9 @@ class ProductBrand extends Model
 
         return $slug;
     }
+     // Relationship to Products
+     public function products()
+    {
+        return $this->hasMany(Product::class, 'brand_id');
+    }
 }

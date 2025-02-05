@@ -10,4 +10,8 @@ Interface ProductRepositoryInterface{
     public function storeProductBrand($request);
     public function updateProductBrand($request, $brand);
     public function destroyProductBrand($brand);
+    // product
+    public function storeProduct($request);
+    public function updateProduct($request,$product);
+    public function destroyProduct($product);
 }

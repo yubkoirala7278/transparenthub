@@ -34,4 +34,14 @@ class ProductCategory extends Model
 
         return $slug;
     }
+    // Relationship to Products
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id');
+    }
+    //Relationship to sub categories
+    public function subCategories()
+    {
+        return $this->hasMany(ProductSubCategory::class, 'product_categories_id');
+    }
 }

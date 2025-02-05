@@ -129,17 +129,29 @@ class BrandController extends Controller
     {
         try {
             $brand = ProductBrand::where('slug', $slug)->first();
-            if(!$brand){
+
+            if (!$brand) {
                 return response()->json(['status' => 'error', 'message' => 'Brand not found']);
             }
+
+            // Check if brand has related products
+            if ($brand->products()->exists()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Cannot delete brand. It has associated products.'
+                ]);
+            }
+
             $this->productRepository->destroyProductBrand($brand);
+
             return response()->json(['status' => 'success', 'message' => 'Brand deleted successfully']);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'error', 'message' => $th->getMessage()]);
         }
     }
 
-     /**
+
+    /**
      * toggle status
      */
     public function toggleStatus(Request $request, $slug)

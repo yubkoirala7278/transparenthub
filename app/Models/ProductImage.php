@@ -6,18 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class ProductSubCategory extends Model
+class ProductImage extends Model
 {
     use HasFactory;
-    protected $fillable = ['slug', 'product_categories_id', 'name', 'status'];
+    protected $fillable = ['slug', 'product_id', 'image'];
     // Boot method to handle model events
     protected static function boot()
     {
         parent::boot();
 
-        // Automatically generate a unique slug when creating a product sub_category
-        static::creating(function ($product_sub_category) {
-            $product_sub_category->slug = static::generateUniqueSlug();
+        // Automatically generate a unique slug when creating a product images
+        static::creating(function ($product_image) {
+            $product_image->slug = static::generateUniqueSlug();
         });
     }
 
@@ -35,15 +35,9 @@ class ProductSubCategory extends Model
         return $slug;
     }
 
-    // Relationship to Products
-    public function products()
+    // Relationship with Product model
+    public function product()
     {
-        return $this->hasMany(Product::class, 'sub_category_id');
-    }
-
-    // Relationship to Category
-    public function category()
-    {
-        return $this->belongsTo(ProductCategory::class, 'product_categories_id');
+        return $this->belongsTo(Product::class);
     }
 }

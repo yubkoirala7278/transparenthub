@@ -46,7 +46,9 @@
                         <li><a href="{{route('products_category.index')}}">Category</a></li>
                         <li><a href="{{route('products_sub_category.index')}}">Sub Category</a></li>
                         <li><a href="{{route('products_brand.index')}}">Brands</a></li>
-                        <li><a href="">Products</a></li>
+                        <li><a href="{{route('color.index')}}">Color</a></li>
+                        <li><a href="{{route('size.index')}}">Size</a></li>
+                        <li><a href="{{route('products.index')}}">Products</a></li>
                     </ul>
                 </li>
 

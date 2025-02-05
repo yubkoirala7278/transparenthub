@@ -53,4 +53,27 @@
 .news-title:hover{
     color: #1169B3;
 }
+.ck-editor__editable {
+    min-height: 200px; /* Set the minimum height */
+}
+.card {
+    border-top: none !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display{
+    color: black !important;
+}
+.mark {
+    margin: 0 -0.4em;
+    padding: 0.1em 0.4em;
+    border-radius: 0.8em 0.3em;
+    background: transparent;
+    background-image: linear-gradient(
+      to right,
+      rgba(255, 225, 0, 0.1),
+      rgba(255, 225, 0, 0.7) 4%,
+      rgba(255, 225, 0, 0.3)
+    );
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
 
