@@ -14,11 +14,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
-Route::get('/news-detail/{slug?}/{keyword?}', [NewsController::class, 'news'])->name('news.view');
-Route::get('/news-with-category/{category}', [NewsController::class, 'newsWithCategories'])->name('news.with.category');
-Route::get('/news-suggestions', [NewsController::class, 'getSuggestions'])->name('news.suggestions');
-Route::get('/shop', [ShopController::class, 'index'])->name('shop');
-Route::get('/product-detail', [ShopController::class, 'productDetail'])->name('product.detail');
 Route::get('/professional-services', [ProfessionalController::class, 'index'])->name('professional');
 Route::get('/professional-detail', [ProfessionalController::class, 'professionalDetail'])->name('professional.detail');
 Route::get('/palika', [PalikaController::class, 'index'])->name('palika');
@@ -26,5 +21,16 @@ Route::get('/palika-detail', [PalikaController::class, 'palikaDetail'])->name('p
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/blog-detail/{slug}', [BlogController::class, 'blogDetail'])->name('blog.detail');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+
+// news
+Route::get('/news-detail/{slug?}/{keyword?}', [NewsController::class, 'news'])->name('news.view');
+Route::get('/news-with-category/{category}', [NewsController::class, 'newsWithCategories'])->name('news.with.category');
+Route::get('/news-suggestions', [NewsController::class, 'getSuggestions'])->name('news.suggestions');
 Route::get('/news/load', [NewsController::class, 'load'])->name('news.load');
+
+// product
+Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+Route::get('/product-detail/{slug}', [ShopController::class, 'productDetail'])->name('product.detail');
+Route::get('/load-more-products', [ShopController::class, 'loadMoreProducts']);
+
 

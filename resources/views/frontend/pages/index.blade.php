@@ -497,158 +497,35 @@
         </div>
     </section>
 
-
+    @if(count($product_categories)>0)
     <section class="container-fluid home-product-category" id="product-category">
         <div class="section-title">
             <h2 class="fs-5 mb-3 title">Product Category</h2>
         </div>
 
         <div class="product-category-slider mt-4 g-3">
-
+            @foreach ($product_categories as $product_category)
             <div class="item">
                 <div class="card" style="width: 100%">
                     <div class="product-image">
                         <a href="">
-                            <img src="{{ asset('frontend/img/product/product-1.jpg') }}" class="img-fluid w-100"
-                                alt="...">
+                            <img src="{{ asset($product_category->image) }}" class="img-fluid w-100"
+                                alt="Product Category Image" loading="lazy">
                         </a>
-
                     </div>
                     <div class="card-body">
                         <a href="productdetail.html" class="text-decoration-none">
                             <h5 class="card-title m-0">
-                                Camera
+                                {{$product_category->name}}
                             </h5>
                         </a>
                     </div>
                 </div>
             </div>
-
-
-            <div class="item">
-                <div class="card" style="width: 100%">
-                    <div class="product-image">
-                        <a href="">
-                            <img src="{{ asset('frontend/img/product/product-2.jpg') }}" class="img-fluid w-100"
-                                alt="...">
-                        </a>
-
-                    </div>
-                    <div class="card-body">
-                        <a href="productdetail.html" class="text-decoration-none">
-                            <h5 class="card-title m-0">
-                                Clothing
-                            </h5>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item">
-                <div class="card" style="width: 100%">
-                    <div class="product-image">
-                        <a href="">
-                            <img src="{{ asset('frontend/img/product/product-3.jpg') }}" class="img-fluid w-100"
-                                alt="...">
-                        </a>
-
-                    </div>
-                    <div class="card-body">
-                        <a href="productdetail.html" class="text-decoration-none">
-                            <h5 class="card-title m-0">
-                                Table Lamp
-                            </h5>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item">
-                <div class="card" style="width: 100%">
-                    <div class="product-image">
-                        <a href="">
-                            <img src="{{ asset('frontend/img/product/product-4.jpg') }}" class="img-fluid w-100"
-                                alt="...">
-                        </a>
-
-                    </div>
-                    <div class="card-body">
-                        <a href="productdetail.html" class="text-decoration-none">
-                            <h5 class="card-title m-0">
-                                Shoes
-                            </h5>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item">
-                <div class="card" style="width: 100%">
-                    <div class="product-image">
-                        <a href="">
-                            <img src="{{ asset('frontend/img/product/product-5.jpg') }}" class="img-fluid w-100"
-                                alt="...">
-                        </a>
-
-                    </div>
-                    <div class="card-body">
-                        <a href="productdetail.html" class="text-decoration-none">
-                            <h5 class="card-title m-0">
-                                Electronic
-                            </h5>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item">
-                <div class="card" style="width: 100%">
-                    <div class="product-image">
-                        <a href="">
-                            <img src="{{ asset('frontend/img/product/product-6.jpg') }}" class="img-fluid w-100"
-                                alt="...">
-                        </a>
-
-                    </div>
-                    <div class="card-body">
-                        <a href="productdetail.html" class="text-decoration-none">
-                            <h5 class="card-title m-0">
-                                Watches
-                            </h5>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="card" style="width: 100%">
-                    <div class="product-image">
-                        <a href="">
-                            <img src="{{ asset('frontend/img/product/product-7.jpg') }}" class="img-fluid w-100"
-                                alt="...">
-                        </a>
-
-                    </div>
-                    <div class="card-body">
-                        <a href="productdetail.html" class="text-decoration-none">
-                            <h5 class="card-title m-0">
-                                Women Clothes
-                            </h5>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-
+            @endforeach
         </div>
-
-
-
     </section>
+    @endif
 
     <section class="mt-5 hr w-100"></section>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\NewsSource;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -42,8 +43,8 @@ class HomeController extends Controller
                 ->limit(3)
                 ->latest()
                 ->get();
-
-            return view('frontend.pages.index', compact('bulletin_news', 'lokPriyaNews', 'news_sources', 'trendingNews', 'sahitya_blog_news'));
+            $product_categories = ProductCategory::where('status', 'active')->orderBy('name', 'asc')->get();
+            return view('frontend.pages.index', compact('bulletin_news', 'lokPriyaNews', 'news_sources', 'trendingNews', 'sahitya_blog_news', 'product_categories'));
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

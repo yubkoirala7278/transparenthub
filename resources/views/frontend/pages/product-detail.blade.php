@@ -1,4 +1,15 @@
 @extends('frontend.layouts.master')
+@section('custom-css')
+    <style>
+        figure {
+            text-align: center;
+        }
+
+        figure img {
+            max-height: 200px;
+        }
+    </style>
+@endsection
 @section('content')
     <main class="wrapper-contain">
 
@@ -8,55 +19,36 @@
             </div>
         </section>
 
-
-
         <section class="product-detail  container-fluid mt-5">
             <div class="row gy-4">
                 <div class="col-md-6">
                     <div class="row">
                         <div class="product-detail-img">
-                            <img src="{{ asset('frontend/img/product/product-10.jpg') }}" class=""
-                                id="product-detail-img" alt="">
+                            <img src="{{ asset($product->feature_image) }}" class="img-fluid" id="product-detail-img"
+                                alt="Product Image" loading="lazy" style="object-fit: contain">
                         </div>
-
-                        <div class="mt-4 px-4">
-                            <div class="product-detail-slider scroll-none-container">
-                                <div class="product-slider-img">
-                                    <img src="{{ asset('frontend/img/product/product-10.jpg') }}" class="detail-slide-img"
-                                        alt="">
+                        <div class="container" style="overflow-x: hidden;">
+                            @if ($product->images->count() > 0)
+                                <div class="mt-4 px-4 position-relative">
+                                    <div class="product-detail-slider-container">
+                                        <div class="product-detail-slider my-slider">
+                                            @foreach ($product->images as $productImage)
+                                                <div class="product-slider-img">
+                                                    <img src="{{ asset($productImage->image) }}" class="detail-slide-img"
+                                                        alt="Product Image" data-large="{{ asset($productImage->image) }}">
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="product-slider-img">
-                                    <img src="{{ asset('frontend/img/product/product-7.jpg') }}" class="detail-slide-img"
-                                        alt="">
-                                </div>
-                                <div class="product-slider-img">
-                                    <img src="{{ asset('frontend/img/product/product-9.jpg') }}" class=" detail-slide-img"
-                                        alt="">
-                                </div>
-
-                                <div class="product-slider-img">
-                                    <img src="{{ asset('frontend/img/product/product-3.jpg') }}" class=" detail-slide-img"
-                                        alt="">
-                                </div>
-
-                                <div class="product-slider-img">
-                                    <img src="{{ asset('frontend/img/product/product-8.jpg') }}" class=" detail-slide-img"
-                                        alt="">
-                                </div>
-
-                                <div class="product-slider-img">
-                                    <img src="{{ asset('frontend/img/product/product-11.jpg') }}" class=" detail-slide-img"
-                                        alt="">
-                                </div>
-                            </div>
+                            @endif
                         </div>
-
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="product-contain d-flex flex-column gap-2">
-                        <h2 class="product-title m-0">Winter Beanie Hat Scarf Set Warm Knit Hat.</h2>
+                        <h2 class="product-title m-0">{{ $product->name }}</h2>
 
                         <div class="d-flex gap-2 rating-box">
                             <div class="rating">
@@ -74,17 +66,25 @@
                         <div class="hr w-100 bg-danger"></div>
 
                         <div class="brand">
-                            <small class="fw-bold text-secondary">Brand: <a href="" class="text-decoration-none">No
-                                    Brand</a> | <a href="" class="text-decoration-none">More brand from No
-                                    Brand</a></small>
+                            <small class="fw-bold text-secondary">Brand: <a href=""
+                                    class="text-decoration-none">{{ $product->brand ? $product->brand->name : 'No Brand' }}</a>
+                                |
+                                @if ($product->brand)
+                                    <a href="" class="text-decoration-none">More brand from
+                                        {{ $product->brand->name }}</a>
+                            </small>
+                            @endif
+
                         </div>
 
                         <div class="price d-flex align-items-end align-items-lg-center gap-5">
-                            <p class="m-0">Price <strong class="fs-4">Rs. 12560</strong> <span
-                                    class="ms-lg-2 d-block d-lg-inline fw-semibold text-secondary text-decoration-line-through">Rs.
-                                    20,000</span> </p>
-
-                            <small class="fw-bold text-secondary">as per today's price</small>
+                            <p class="m-0">Price <strong class="fs-4">Rs. {{ $product->price }}</strong>
+                                @if ($product->compare_price)
+                                    <span
+                                        class="ms-lg-2 d-block d-lg-inline fw-semibold text-secondary text-decoration-line-through">Rs.
+                                        {{ $product->compare_price }} </span>
+                                @endif
+                            </p>
                         </div>
 
                         <div class="stock d-flex gap-3 align-items-center">
@@ -143,52 +143,62 @@
         <section class="product-description container-fluid">
 
             <div class="row description">
-                <div class="col-md-8">
-                    <h3 class="fs-4 fw-bold">Product details of Winter Beanie Hat Scarf Set Warm Knit Hat Thick Fleece
-                        Lined Skull Cap for Men/Women</h3>
-                    <p class="desc-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis quia,
-                        numquam sapiente
-                        temporibus
-                        rerum, ratione omnis minus est eligendi magni facere dolor, debitis quo totam sit cum! Dolorum
-                        nobis
-                        non exercitationem repudiandae a adipisci natus ex temporibus earum totam dolores unde nulla
-                        nisi ea
-                        repellat ratione voluptatem eaque, saepe ipsum. Lorem ipsum dolor sit, amet consectetur
-                        adipisicing elit. Excepturi magnam enim, totam mollitia possimus eius, placeat veritatis aperiam
-                        quidem cum, officiis dolorem iure! Dolores quos id delectus sequi, at tempora dolorem facere
-                        necessitatibus veniam itaque, vel quasi totam velit. Cumque, dolorem nisi perspiciatis sed qui
-                        illum id aliquid deserunt vero.</p>
-                </div>
-                <div class="col-md-4">
-                    <img src="{{ asset('frontend/img/about/about-1.png') }}" class="w-100 img-fluid" alt="">
+                <div class="col-12">
+                    {!! $product->description !!}
                 </div>
             </div>
         </section>
-
-
-
-
-
     </main>
 @endsection
 
 @push('script')
     <script>
-        const slideImages = document.querySelectorAll(".detail-slide-img");
-        const mainImg = document.getElementById("product-detail-img");
+        document.addEventListener("DOMContentLoaded", function() {
+            const slider = new tns({
+                container: '.my-slider',
+                items: 1, // Show 1 image at a time
+                slideBy: 'page',
+                autoplay: false,
+                controls: false, // Disable the default controls
+                nav: false, // Disable the default navigation
+                autoplayButtonOutput: false,
+                autoplayHoverPause: true,
+                Lazyload: true,
+                touch: true,
+                loop: true,
+                rewind: false,
+                mouseDrag: true,
+                responsive: {
+                    0: {
+                        items: 2
+                    },
+                    320: {
+                        items: 3
+                    },
+                    500: {
+                        items: 3
+                    },
+                    730: {
+                        items: 4
+                    },
+                    900: {
+                        items: 5
+                    },
+                    1350: {
+                        items: 6
+                    },
+                }
+            });
 
-        slideImages.forEach((slideImg) => {
-            slideImg.addEventListener('click', () => {
-                // Update the main image's src
-                mainImg.src = slideImg.src;
+            // Add click event to each image in the slider
+            const sliderImages = document.querySelectorAll('.detail-slide-img');
+            const mainImage = document.getElementById('product-detail-img');
 
-                // Reset the scale of all slide images
-                slideImages.forEach((img) => {
-                    img.style.transform = "scale(1)"; // Reset scale to default
+            sliderImages.forEach((img) => {
+                img.addEventListener('click', () => {
+                    // Update the main image src
+                    mainImage.src = img.getAttribute('data-large');
                 });
-
-                // Scale only the selected image
-                slideImg.style.transform = "scale(1.03)";
             });
         });
     </script>
