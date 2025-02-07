@@ -16,7 +16,6 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\JsonResponse;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {

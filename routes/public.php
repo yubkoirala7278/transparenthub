@@ -29,8 +29,9 @@ Route::get('/news-suggestions', [NewsController::class, 'getSuggestions'])->name
 Route::get('/news/load', [NewsController::class, 'load'])->name('news.load');
 
 // product
-Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/product-detail/{slug}', [ShopController::class, 'productDetail'])->name('product.detail');
+Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/load-more-products', [ShopController::class, 'loadMoreProducts']);
+Route::get('/filter-products', [ShopController::class, 'filterProducts'])->name('products.filter');
 
 
