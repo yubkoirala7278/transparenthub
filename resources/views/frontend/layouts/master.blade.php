@@ -30,6 +30,11 @@
     {{-- toastify css --}}
     @toastifyCss
     @yield('custom-css')
+    <style>
+        body{
+            background-color: #fff2f224;
+        }
+    </style>
 </head>
 
 <body onload=updateClock();>

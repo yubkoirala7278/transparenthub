@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <div class="my-navbar">
+    <div class="my-navbar" style="background-color: #fef8f8;">
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid px-0">
@@ -27,7 +27,7 @@
                         </button>
                         <div class="my-logo-design">
                             <a href="/" class="text-decoration-none d-block d-lg-none">
-                                <img src="{{ asset('frontend/img/logo.jpg') }}" style="height: 50px;" alt="Header Image"
+                                <img src="{{ asset('frontend/img/logo.png') }}" style="height: 50px;" alt="Header Image"
                                     loading="lazy">
                             </a>
                         </div>
@@ -39,7 +39,7 @@
                             <div class="top-logo d-none d-lg-block">
                                 <div class="my-logo-design">
                                     <a href="/" class="text-decoration-none">
-                                        <img src="{{ asset('frontend/img/logo.jpg') }}" style="height: 70px;"
+                                        <img src="{{ asset('frontend/img/logo.png') }}" style="height: 70px;"
                                             alt="">
                                     </a>
                                 </div>

@@ -1,25 +1,25 @@
 @extends('frontend.layouts.master')
 @section('content')
-    <section class="top-add-wrapper mt-0">
+    {{-- <section class="top-add-wrapper mt-0">
         <div class="">
             <img class="top-add-gif" src="{{ asset('frontend/gif/main-2.gif') }}" alt="..." loading="lazy">
         </div>
-    </section>
+    </section> --}}
 
     <div class="container-fluid mobile-filter-btn d-flex justify-content-end d-lg-none mt-2">
         <button class="btn p-0 text-danger" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
             aria-controls="offcanvasRight"><i class="fa-solid fa-filter  me-1"></i>Filter</button>
     </div>
 
-    <section class="container-fluid home-shop mt-0 mt-lg-5">
+    <section class="container-fluid home-shop mt-0 mt-lg-4">
         <!-- <div class="section-title">
-                                                                                                                                                                    <h2 class="fs-5 mb-3 title">Our Product</h2>
-                                                                                                                                                                </div> -->
+                                                                                                                                                                                            <h2 class="fs-5 mb-3 title">Our Product</h2>
+                                                                                                                                                                                        </div> -->
         <div class="row">
             <div class="col-lg-2 d-none d-lg-block">
                 <div class="row product-filter">
                     <div class="price-range">
-                        <h2 class="fs-6 fw-semibold text-danger">Price Rangess</h2>
+                        <h2 class="fs-6 fw-semibold text-danger">Price Ranges</h2>
                         <!-- Price Range Slider -->
                         <div class="row gx-1 align-items-end">
                             <div class="col-5">
@@ -37,8 +37,24 @@
 
                     </div>
                     <div class="hr my-3 w-100"></div>
+                    <div class="brands">
+                        <h2 class="fs-6 fw-semibold text-danger">Brands</h2>
+                        @if (count($brands) > 0)
+                            @foreach ($brands as $brand)
+                                <div class="form-check">
+                                    <input class="form-check-input brand-filter" type="checkbox"
+                                        value="{{ $brand->id }}" id="brand{{ $brand->id }}">
+                                    <label class="form-check-label" for="brand{{ $brand->id }}">
+                                        {{ $brand->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        @endif
+
+                    </div>
+                    <div class="hr my-3 w-100"></div>
                     <div class="category">
-                        <h2 class="fs-6 fw-semibold text-danger">Categorysss</h2>
+                        <h2 class="fs-6 fw-semibold text-danger">Category</h2>
                         @if (count($categories) > 0)
                             @foreach ($categories as $category)
                                 <div class="form-check">
@@ -54,7 +70,7 @@
                     </div>
                     <div class="hr my-3 w-100"></div>
                     <div class="category">
-                        <h2 class="fs-6 fw-semibold text-danger">Colorsss</h2>
+                        <h2 class="fs-6 fw-semibold text-danger">Colors</h2>
                         @if (count($colors) > 0)
                             @foreach ($colors as $color)
                                 <div class="form-check">
@@ -71,6 +87,24 @@
             </div>
 
             <div class="col-lg-10">
+                <div class="d-flex align-items-center justify-content-between">
+                    <!-- Search Box -->
+                    <div class="search-box me-2 position-relative">
+                        <input type="text" id="searchQuery" class="form-control" placeholder="Search Products...">
+                        <i class="fas fa-search position-absolute top-50 end-0 translate-middle-y pe-3"></i>
+                    </div>
+                    
+                    <!-- Sort Order -->
+                    <div class="d-flex align-items-center">
+                        <label for="sortOrder">Sort By:</label>
+                        <select id="sortOrder" class="form-select w-auto ms-1">
+                            <option value="">Best Match</option>
+                            <option value="low-high">Price: Low to High</option>
+                            <option value="high-low">Price: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="row mt-0 g-2" id="product-list" data-initial-offset="{{ $initialProducts->count() }}">
                     @if ($initialProducts->isEmpty())
                         <div class="no-products">No products to display</div>
@@ -272,29 +306,42 @@
         $(document).ready(function() {
             const limit = 6; // Number of products per page
             let offset = parseInt($("#product-list").data("initial-offset")) || 0;
+            let searchTimeout;
 
             // Clear filter fields on page load
             $("#minPrice").val('');
             $("#maxPrice").val('');
-            $(".category-filter, .color-filter").prop("checked", false);
+            $("#searchQuery").val('');
+            $(".category-filter,.brand-filter, .color-filter").prop("checked", false);
+            $("#sortOrder").val('');
 
-            // Show Load More button if initial products exist and there might be more
+            // Show Load More button if initial products exist
             if (offset > 0) {
                 $("#load-more").data("offset", offset).show();
             }
 
-            // When any filter changes or the price filter button is clicked:
-            $(".category-filter, .color-filter").on("change", function() {
+            // When filter checkboxes or sort field change
+            $(".category-filter,.brand-filter, .color-filter, #sortOrder").on("change", function() {
                 offset = 0; // Reset offset on filter change
                 loadFilteredProducts();
             });
 
+            // Price filter button click
             $("#filterPriceBtn").on("click", function() {
-                offset = 0; // Reset offset when price filter is applied
+                offset = 0;
                 loadFilteredProducts();
             });
 
-            // Helper: Get selected values for a given checkbox group
+            // Listen for keyup on search input with a 1-second debounce
+            $("#searchQuery").on("keyup", function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(function() {
+                    offset = 0;
+                    loadFilteredProducts();
+                }, 1000);
+            });
+
+            // Helper: Get selected checkbox values
             function getSelectedValues(selector) {
                 let selected = [];
                 $(selector + ":checked").each(function() {
@@ -303,45 +350,57 @@
                 return selected;
             }
 
-            // Load (or reload) filtered products using the filter-products endpoint
+            // Load (or reload) products using the filter-products endpoint
             function loadFilteredProducts() {
                 const minPrice = $("#minPrice").val() || 0;
                 const maxPrice = $("#maxPrice").val() || null;
                 let selectedCategories = getSelectedValues(".category-filter");
+                let selectedBrands = getSelectedValues(".brand-filter");
                 let selectedColors = getSelectedValues(".color-filter");
+                const search = $("#searchQuery").val();
+                const sort = $("#sortOrder").val();
 
-                // If all checkboxes are selected for a filter, clear that filter (ignore it)
+                // If all checkboxes are selected for a filter, clear that filter
                 if (selectedCategories.length === $(".category-filter").length) {
                     selectedCategories = [];
+                }
+                if (selectedBrands.length === $(".brand-filter").length) {
+                    selectedBrands = [];
                 }
                 if (selectedColors.length === $(".color-filter").length) {
                     selectedColors = [];
                 }
 
-                // Use the filter-products endpoint for a fresh load (offset = 0)
-                loadProducts("/filter-products", minPrice, maxPrice, selectedCategories, selectedColors, 0);
+                loadProducts("/filter-products", minPrice, maxPrice, selectedCategories,selectedBrands, selectedColors, search,
+                    sort, 0);
             }
 
-            // Load more products when the "Load More" button is clicked (using the load-more-products endpoint)
+            // Load more products on Load More button click (using load-more-products endpoint)
             $("#load-more").on("click", function() {
                 const minPrice = $("#minPrice").val() || 0;
                 const maxPrice = $("#maxPrice").val() || null;
                 let selectedCategories = getSelectedValues(".category-filter");
+                let selectedBrands = getSelectedValues(".brand-filter");
                 let selectedColors = getSelectedValues(".color-filter");
+                const search = $("#searchQuery").val();
+                const sort = $("#sortOrder").val();
 
                 if (selectedCategories.length === $(".category-filter").length) {
                     selectedCategories = [];
+                }
+                if (selectedBrands.length === $(".brand-filter").length) {
+                    selectedBrands = [];
                 }
                 if (selectedColors.length === $(".color-filter").length) {
                     selectedColors = [];
                 }
 
-                loadProducts("/load-more-products", minPrice, maxPrice, selectedCategories, selectedColors,
-                    offset);
+                loadProducts("/load-more-products", minPrice, maxPrice, selectedCategories,selectedBrands, selectedColors,
+                    search, sort, offset);
             });
 
-            // Generic function to load products from a given URL (endpoint)
-            function loadProducts(url, minPrice, maxPrice, categories, colors, currentOffset) {
+            // Generic function to load products from a given endpoint
+            function loadProducts(url, minPrice, maxPrice, categories,brands, colors, search, sort, currentOffset) {
                 $("#loading").show();
                 $("#load-more").hide();
 
@@ -352,25 +411,24 @@
                         minPrice: minPrice,
                         maxPrice: maxPrice,
                         categories: categories,
+                        brands: brands,
                         colors: colors,
+                        search: search,
+                        sort: sort,
                         offset: currentOffset
                     },
                     success: function(response) {
                         if (response.status === "success") {
-                            // Check if no products were returned
                             if (response.noProducts) {
                                 $("#product-list").html(
-                                    "<div class='no-products text-center'>No products to display..</div>"
-                                    );
+                                    "<div class='no-products'>No products to display</div>");
                                 $("#load-more").hide();
                             } else {
-                                // On a fresh load (currentOffset === 0), replace the list; otherwise, append
                                 if (currentOffset === 0) {
                                     $("#product-list").html(response.html);
                                 } else {
                                     $("#product-list").append(response.html);
                                 }
-                                // Update offset and show Load More button if more products exist
                                 if (response.hasMore) {
                                     offset = currentOffset + limit;
                                     $("#load-more").data("offset", offset).show();
@@ -379,11 +437,11 @@
                                 }
                             }
                         } else {
-                            alert("Error loading products. Please try again.");
+                            console.log("Error loading products. Please try again.");
                         }
                     },
                     error: function() {
-                        alert("Error loading products. Please try again.");
+                        console.log("Error loading products. Please try again.");
                     },
                     complete: function() {
                         $("#loading").hide();
