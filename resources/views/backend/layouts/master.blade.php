@@ -20,17 +20,17 @@
     <!-- vendor css -->
     <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/custom.css') }}">
-     {{-- data table css link --}}
-     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    {{-- data table css link --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     {{-- toastify css --}}
     @toastifyCss
-     {{-- CKEditor CDN --}}
-     <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
-     {{-- sweet alert 2 --}}
+    {{-- CKEditor CDN --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+    {{-- sweet alert 2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @yield('header-links')
-    
+
 
 </head>
 
@@ -71,8 +71,8 @@
 
     {{-- toastify js --}}
     @toastifyJs
-     {{-- data table cdn --}}
-     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    {{-- data table cdn --}}
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 </body>
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\frontend\NewsController;
 use App\Http\Controllers\frontend\PalikaController;
 use App\Http\Controllers\frontend\ProfessionalController;
 use App\Http\Controllers\frontend\ShopController;
+use App\Http\Controllers\SocialiteController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,5 +34,26 @@ Route::get('/product-detail/{slug}', [ShopController::class, 'productDetail'])->
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/load-more-products', [ShopController::class, 'loadMoreProducts']);
 Route::get('/filter-products', [ShopController::class, 'filterProducts'])->name('products.filter');
+Route::post('/cart/add', [ShopController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart', [ShopController::class, 'viewCart'])->name('cart.view'); 
+Route::middleware('auth')->group(function () {
+    // Route to update the quantity of a cart item
+    Route::post('/cart/update', [ShopController::class, 'updateCart'])->name('cart.update');
+    // Route to remove an item from the cart
+    Route::post('/cart/remove', [ShopController::class, 'removeFromCart'])->name('cart.remove');
+    // checkout page
+    Route::get('/checkout',[ShopController::class,'checkout'])->name('checkout');
+    // checkout produt
+    Route::post('/checkout-products',[ShopController::class,'checkoutProduct'])->name('checkout.products');
+});
 
+
+
+// login with socialite
+Route::get('auth/google/redirect', [SocialiteController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback'])->name('google.callback');
+
+Route::get('/auth/header', function () {
+    return view('partials.auth-header');
+})->name('auth.header');
 

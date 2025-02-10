@@ -223,23 +223,23 @@ header {
   /* Hover effect */
   /* Optional: Keep text color consistent */
 }
-header .top-nav-bar {
+ .top-nav-bar {
   background-color: var(--primary);
   padding: 4px;
 }
-header .top-nav-bar .date {
+ .top-nav-bar .date {
   margin: 0;
   color: white;
   font-weight: 500;
 }
-header .top-nav-bar a {
+ .top-nav-bar a {
   text-decoration: none;
   color: white;
   border: 1px solid white;
   padding: 2px 8px;
   transition: all 0.2s ease-in-out;
 }
-header .top-nav-bar a:hover {
+ .top-nav-bar a:hover {
   background-color: #fff;
   color: var(--primary);
 }

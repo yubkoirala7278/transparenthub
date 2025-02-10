@@ -94,3 +94,23 @@
     background-color: #0870ca;
     color: white;
 }
+/* Remove focus border on click */
+.btn:focus, .btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* Remove default Bootstrap dropdown arrow */
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+/* Change text color to red on hover */
+.custom-dropdown-btn:hover {
+    color: rgb(220, 220, 220) !important;
+}
+/* Change dropdown text color to red on hover */
+.dropdown-hover:hover {
+    color: red !important;
+}
