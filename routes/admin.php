@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\news\SourceController;
 use App\Http\Controllers\admin\products\BrandController;
 use App\Http\Controllers\admin\products\CategoryController as ProductsCategoryController;
 use App\Http\Controllers\admin\products\ColorController;
+use App\Http\Controllers\admin\products\OrderController;
 use App\Http\Controllers\admin\products\ProductController;
 use App\Http\Controllers\admin\products\SizeController;
 use App\Http\Controllers\admin\products\SubCategoryController;
@@ -46,6 +47,10 @@ Route::post('ckeditor/delete', [NewsController::class, 'delete'])->name('ckedito
 // products
 Route::post('ckeditor/upload/product', [ProductController::class, 'upload'])->name('ckeditor.upload.product');
 Route::post('ckeditor/delete/product', [ProductController::class, 'delete'])->name('ckeditor.delete.product');
+
+Route::get('/orders',[OrderController::class,'index'])->name('admin.orders');
+Route::get('/orders/{slug}',[OrderController::class,'view'])->name('admin.orders.view');
+Route::put('/status/update/{slug}',[OrderController::class,'updateStatus'])->name('admin.update.status');
 
 
 

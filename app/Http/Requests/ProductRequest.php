@@ -44,6 +44,8 @@ class ProductRequest extends FormRequest
             'color_id.*' => 'exists:product_colors,id', // Validate each color ID
             'size_id' => 'nullable|array', // Ensure it's an array
             'size_id.*' => 'exists:product_sizes,id', // Validate each size ID
+            'shipping_charge_inside_valley'=>'nullable|min:0',
+            'shipping_charge_outside_valley'=>'nullable|min:0'
         ];
 
         // Handle feature_image validation based on the request method

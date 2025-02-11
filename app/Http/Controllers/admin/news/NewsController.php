@@ -165,7 +165,7 @@ class NewsController extends Controller
     {
         try {
             $news = News::where('slug', $slug)->first();
-            if(!$news){
+            if (!$news) {
                 return response()->json(['status' => 'error', 'message' => 'News not found']);
             }
             $this->newsRepository->destroyNews($news);
@@ -181,39 +181,60 @@ class NewsController extends Controller
     public function upload(Request $request): JsonResponse
     {
         if ($request->hasFile('upload')) {
-            $image = $request->file('upload');
+            try {
+                $image = $request->file('upload');
 
-            // Get the original file name and extension
-            $originName = $image->getClientOriginalName();
-            $fileName = pathinfo($originName, PATHINFO_FILENAME);
-            $extension = $image->getClientOriginalExtension();
+                // Get original file name (without extension)
+                $originName = $image->getClientOriginalName();
+                $fileNameWithoutExt = pathinfo($originName, PATHINFO_FILENAME);
 
-            // Generate a unique file name with WebP extension
-            $fileName = $fileName . '_' . time() . '.webp';
+                // Set the desired extension (we try WebP first)
+                $extension = 'webp';
+                $uniqueTime = time();
+                $fileName = "{$fileNameWithoutExt}_{$uniqueTime}.{$extension}";
 
-            // Define the storage path (public directory for CKEditor images)
-            $path = public_path('media/' . $fileName);
+                // Define the destination path in the public directory
+                $destinationPath = public_path('media');
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+                $fullPath = $destinationPath . '/' . $fileName;
 
-            // Process and compress the image
-            $img = Image::make($image)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio(); // Maintain aspect ratio
-                    $constraint->upsize(); // Prevent upscaling
-                })
-                ->encode('webp', 80); // Convert to WebP format with 80% quality
+                // Process the image: resize while maintaining aspect ratio and prevent upscaling.
+                $img = Image::make($image)
+                    ->resize(800, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
 
-            // Save the image in the 'media' directory
-            $img->save($path);
+                // Check if your PHP installation supports WebP encoding.
+                // If not, fallback to JPG.
+                if (function_exists('imagewebp')) {
+                    $img->encode('webp', 80);
+                } else {
+                    // Fallback to JPG if WebP is not supported.
+                    $extension = 'jpg';
+                    $fileName = "{$fileNameWithoutExt}_{$uniqueTime}.{$extension}";
+                    $fullPath = $destinationPath . '/' . $fileName;
+                    $img->encode('jpg', 80);
+                }
 
-            // Get the URL of the uploaded image
-            $url = asset('media/' . $fileName);
+                // Save the processed image.
+                $img->save($fullPath);
 
-            // Return the response as required by CKEditor
-            return response()->json([
-                'fileName' => $fileName,
-                'uploaded' => 1,
-                'url' => $url
-            ]);
+                // Build the URL for the saved image.
+                $url = asset('media/' . $fileName);
+
+                // Return JSON response as required by CKEditor.
+                return response()->json([
+                    'fileName' => $fileName,
+                    'uploaded' => 1,
+                    'url' => $url,
+                ]);
+            } catch (\Exception $e) {
+                // Log the error or handle it as needed.
+                return response()->json(['error' => 'Could not upload image: ' . $e->getMessage()], 500);
+            }
         }
 
         return response()->json(['error' => 'No file uploaded.'], 400);

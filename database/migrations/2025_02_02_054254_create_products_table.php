@@ -44,6 +44,11 @@ return new class extends Migration
             
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->longText('shipping_returns')->nullable();
+
+            $table->decimal('shipping_charge_inside_valley',10, 2)->default(0);
+            $table->decimal('shipping_charge_outside_valley',10,2)->default(0);
+
+
             $table->timestamps();
         });
     }

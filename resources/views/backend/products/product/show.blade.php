@@ -104,6 +104,12 @@
                             <span
                                 class="badge {{ $product->is_featured == 'Yes' ? 'bg-primary' : 'bg-secondary' }} text-white">{{ $product->is_featured }}</span>
                         </div>
+
+                        <div class="mt-4">
+                            <h5 class="fw-bold">Shipping Charge</h5>
+                            <p>Inside Valley: {{$product->shipping_charge_inside_valley}}</p>
+                            <p>Outside Valley: {{$product->shipping_charge_outside_valley}}</p>
+                        </div>
                     </div>
                 </div>
 

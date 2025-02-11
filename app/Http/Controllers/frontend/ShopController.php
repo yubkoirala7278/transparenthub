@@ -482,7 +482,7 @@ class ShopController extends Controller
                     'sub_total' => $subTotal,
                     'shipping_charge' => $shippingCharge,
                     'total_charge' => $totalCharge,
-                    'coupon_discount' => $couponDiscount
+                    'coupon_discount' => $couponDiscount,
                 ]);
 
                 // store order items in order items table

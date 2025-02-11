@@ -237,6 +237,8 @@ class ProductRepository implements ProductRepositoryInterface
                 'sub_category_id' => $request->sub_category_id ?? null,
                 'brand_id' => $request->brand_id ?? null,
                 'feature_image' => $imagePath,
+                'shipping_charge_inside_valley'=>$request->shipping_charge_inside_valley??0,
+                'shipping_charge_outside_valley'=>$request->shipping_charge_outside_valley??0
             ]);
 
             // Attach selected colors to the pivot table
@@ -333,6 +335,8 @@ class ProductRepository implements ProductRepositoryInterface
                 'sub_category_id' => $request->sub_category_id ?? null,
                 'brand_id' => $request->brand_id ?? null,
                 'feature_image' => $imagePath,
+                'shipping_charge_inside_valley'=>$request->shipping_charge_inside_valley??0,
+                'shipping_charge_outside_valley'=>$request->shipping_charge_outside_valley??0
             ]);
 
             // Attach or sync selected colors to the pivot table

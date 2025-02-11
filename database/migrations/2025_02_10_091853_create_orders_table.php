@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('slug');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
 
@@ -25,10 +26,10 @@ return new class extends Migration
             $table->string('state');
             $table->string('zip')->nullable();
 
-            $table->integer('sub_total');
-            $table->integer('shipping_charge');
-            $table->integer('coupon_discount')->default(0);
-            $table->integer('total_charge');
+            $table->decimal('sub_total',10,2);
+            $table->decimal('shipping_charge',10,2);
+            $table->decimal('coupon_discount',10,2)->default(0);
+            $table->decimal('total_charge',10,2);
             $table->enum('payment_status',['paid','not_paid'])->default('not_paid');
             $table->enum('status',['pending','shipped','delivered','cancelled'])->default('pending');
             $table->timestamp('shipped_date')->nullable();

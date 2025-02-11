@@ -25,7 +25,7 @@
                 <div id="top-news-slider">
                     <div class="top-news-slider">
                         @foreach ($bulletin_news as $key => $news)
-                            <div class="item ">
+                            <div class="item">
                                 <div class="my-card mb-3 mx-2">
                                     <div class="row g-0">
                                         <div class="col-md-6">

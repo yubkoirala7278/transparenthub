@@ -100,6 +100,8 @@ class NewsController extends Controller
                         'image' => asset($news->image),
                         'url' => route('news.view', ['slug' => $news->slug]),
                         'created_at' => $news->created_at,
+                        'description'=>\Illuminate\Support\Str::limit(html_entity_decode(strip_tags($news->description)), 100, '...'),
+                        'category'=>$news->news_categories->name
                     ];
                 });
 
@@ -131,7 +133,7 @@ class NewsController extends Controller
             $news = News::where('news_sources_id', $sourceId)
                 ->where('status', 'active')
                 ->latest()  // Orders by 'created_at' column by default
-                ->take(10)  // Limits the result to 10 records
+                ->take(2)  // Limits the result to 10 records
                 ->get();
 
             // If no news is found, return an error response in JSON format

@@ -69,6 +69,7 @@
 
                                     </div>
                                 </div>
+                               
                                 <div class="card shadow bg-white rounded ">
                                     <div class="card-body">
                                         {{-- Feature Image --}}
@@ -279,6 +280,38 @@
                                             </select>
                                             @if ($errors->has('color_id'))
                                                 <span class="text-danger">{{ $errors->first('color_id') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card shadow bg-white rounded ">
+                                    <div class="card-body">
+                                        {{-- shipping charge inside valley --}}
+                                        <div class="form-group">
+                                            <label for="shipping_charge_inside_valley"
+                                                class="font-weight-bold h5">Shipping Charge (Inside Valley)<span
+                                                    class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="shipping_charge_inside_valley"
+                                                name="shipping_charge_inside_valley"
+                                                placeholder="Enter Shipping Charge Inside Valley"
+                                                value="{{ old('shipping_charge_inside_valley',$product->shipping_charge_inside_valley) }}">
+                                            @if ($errors->has('shipping_charge_inside_valley'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('shipping_charge_inside_valley') }}</span>
+                                            @endif
+                                        </div>
+                                        {{-- shipping charge outside valley --}}
+                                        <div class="form-group">
+                                            <label for="shipping_charge_outside_valley"
+                                                class="font-weight-bold h5">Shipping Charge(Outside Valley)<span
+                                                    class="text-danger">*</span></label>
+                                            <input type="number" class="form-control"
+                                                id="shipping_charge_outside_valley" name="shipping_charge_outside_valley"
+                                                placeholder="Enter Shipping Charge Outside Valley"
+                                                value="{{ old('shipping_charge_outside_valley',$product->shipping_charge_outside_valley) }}">
+                                            @if ($errors->has('shipping_charge_outside_valley'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('shipping_charge_outside_valley') }}</span>
                                             @endif
                                         </div>
                                     </div>

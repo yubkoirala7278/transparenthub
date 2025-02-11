@@ -55,8 +55,29 @@
     background-color: #f8f9fa;
 }
 
+.news-title {
+    color: #1169B3 !important;
+}
+
 .news-title:hover {
-    color: #1169B3;
+    color: #234a6a !important;
+}
+
+.news-img-div {
+    position: relative;
+}
+
+.news-img-div span {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    color: white;
+    background-color: #015DAE;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    line-height: 22px;
+    padding: 0 8px;
+    border-radius: 1px;
 }
 
 .ck-editor__editable {
@@ -84,18 +105,22 @@
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
 }
-#load-more{
-    letter-spacing:2px; 
-    border: 1px solid #015DAE; 
-    color: #015DAE; 
+
+#load-more {
+    letter-spacing: 2px;
+    border: 1px solid #015DAE;
+    color: #015DAE;
     background-color: transparent;
 }
+
 #load-more:hover {
     background-color: #0870ca;
     color: white;
 }
+
 /* Remove focus border on click */
-.btn:focus, .btn:active {
+.btn:focus,
+.btn:active {
     outline: none !important;
     box-shadow: none !important;
     border: none !important;
@@ -110,6 +135,7 @@
 .custom-dropdown-btn:hover {
     color: rgb(220, 220, 220) !important;
 }
+
 /* Change dropdown text color to red on hover */
 .dropdown-hover:hover {
     color: red !important;

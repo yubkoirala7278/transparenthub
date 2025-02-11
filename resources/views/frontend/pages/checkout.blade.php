@@ -96,14 +96,14 @@
                                     </div>
 
                                     <!-- Coupon Code -->
-                                    <div class="col-12 mt-4">
+                                    {{-- <div class="col-12 mt-4">
                                         <h5 class="fw-semibold text-dark mb-3">Coupon Code</h5>
                                         <div class="row g-3">
                                             <div class="col-12">
                                                 <input type="text" class="form-control" placeholder="Coupon Code">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- Payment Section -->
                                     <div class="col-12 mt-4">

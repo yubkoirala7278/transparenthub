@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['slug', 'name', 'description', 'price', 'compare_price', 'feature_image', 'sku', 'category_id', 'sub_category_id', 'brand_id', 'color_id', 'is_featured', 'track_qty', 'qty', 'status', 'shipping_returns'];
+    protected $fillable = ['slug', 'name', 'description', 'price', 'compare_price', 'feature_image', 'sku', 'category_id', 'sub_category_id', 'brand_id', 'color_id', 'is_featured', 'track_qty', 'qty', 'status', 'shipping_returns','shipping_charge_inside_valley','shipping_charge_outside_valley'];
     // Boot method to handle model events
     protected static function boot()
     {

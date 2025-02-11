@@ -291,6 +291,37 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="card shadow bg-white rounded ">
+                                    <div class="card-body">
+                                        {{-- shipping charge inside valley --}}
+                                        <div class="form-group">
+                                            <label for="shipping_charge_inside_valley"
+                                                class="font-weight-bold h5">Shipping Charge (Inside Valley)</label>
+                                            <input type="number" class="form-control" id="shipping_charge_inside_valley"
+                                                name="shipping_charge_inside_valley"
+                                                placeholder="Enter Shipping Charge Inside Valley"
+                                                value="{{ old('shipping_charge_inside_valley') }}">
+                                            @if ($errors->has('shipping_charge_inside_valley'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('shipping_charge_inside_valley') }}</span>
+                                            @endif
+                                        </div>
+                                        {{-- shipping charge outside valley --}}
+                                        <div class="form-group">
+                                            <label for="shipping_charge_outside_valley"
+                                                class="font-weight-bold h5">Shipping Charge(Outside Valley)</label>
+                                            <input type="number" class="form-control"
+                                                id="shipping_charge_outside_valley" name="shipping_charge_outside_valley"
+                                                placeholder="Enter Shipping Charge Outside Valley"
+                                                value="{{ old('shipping_charge_outside_valley') }}">
+                                            @if ($errors->has('shipping_charge_outside_valley'))
+                                                <span
+                                                    class="text-danger">{{ $errors->first('shipping_charge_outside_valley') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="card shadow bg-white rounded ">
                                     <div class="card-body">
                                         {{-- featured or not --}}
@@ -345,7 +376,7 @@
                         success: function(response) {
                             $('#sub_category_id').empty().append(
                                 '<option selected disabled>Select Product Sub Category</option>'
-                                );
+                            );
 
                             if (response.length > 0) {
                                 $.each(response, function(key, subCategory) {
@@ -354,10 +385,10 @@
                                         '</option>');
                                 });
                                 $('#sub_category_div')
-                            .show(); // Show subcategory div if subcategories exist
+                                    .show(); // Show subcategory div if subcategories exist
                             } else {
                                 $('#sub_category_div')
-                            .hide(); // Hide subcategory div if no subcategories
+                                    .hide(); // Hide subcategory div if no subcategories
                             }
                         }
                     });
@@ -455,7 +486,7 @@
 
                         // Compare previous and current images to find deleted ones
                         const deletedImages = previousImages.filter(img => !currentImages.includes(
-                        img));
+                            img));
                         if (deletedImages.length > 0) {
                             deleteImagesFromServer(deletedImages);
                         }

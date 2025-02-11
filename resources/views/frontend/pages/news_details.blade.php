@@ -56,17 +56,18 @@
         }
 
         .card-img-top {
-            transition: transform 0.3s ease-in-out;
-            /* Smooth transition */
-            object-fit: cover;
             /* Ensure image covers the area */
+            object-fit: cover;
             width: 100%;
             height: 200px;
+
+            /* Smooth transition effect */
+            transition: opacity 0.3s ease-in-out;
         }
 
         .card-img-top:hover {
-            transform: scale(1.1);
-            /* Zoom in the image */
+            opacity: 0.8;
+            /* Add an effect like slight transparency on hover */
         }
 
         .share-button {
@@ -81,8 +82,9 @@
         .text-muted {
             font-size: 0.875rem;
         }
-        .card-text{
-            color:rgb(24, 21, 21);
+
+        .card-text {
+            line-height: 1px;
         }
     </style>
 @endsection
@@ -125,24 +127,29 @@
                                 <div class="col-md-6 col-lg-4 ">
                                     <div class="card border-0 hover-card">
                                         <a href="{{ route('news.view', ['slug' => $same_category_news->slug]) }}">
-                                        <img src="{{ asset($same_category_news->image) }}" class="card-img-top img-fluid"
-                                            alt="News Image"
-                                            style="object-fit: cover; height: 200px; width: 100%; border-radius: 8px 8px 0 0;">
+                                            <div class="news-img-div">
+                                                <img src="{{ asset($same_category_news->image) }}"
+                                                    class="card-img-top img-fluid" alt="News Image" style="height: 200px">
+                                                <span>{{ $same_category_news->news_categories->name }}</span>
+                                            </div>
                                         </a>
-                                        <div class="card-body border border-1 rounded-bottom-2">
-                                            <a class="card-text fw-semibold text-center news-title fs-5 text-decoration-none" href="{{ route('news.view', ['slug' => $same_category_news->slug]) }}">
+                                        <div class="card-body mt-2 px-0 pt-1 pb-0">
+                                            <a class="card-text fw-semibold text-center news-title fs-5 text-decoration-none"
+                                                href="{{ route('news.view', ['slug' => $same_category_news->slug]) }}">
                                                 {{ $same_category_news->title }}
                                             </a>
-                                            <div class="d-flex align-items-center justify-content-between mt-2">
-                                                <p class="text-muted small mb-0">
-                                                    {{ $same_category_news->created_at->format('M d, Y') }}
-                                                </p>
-                                                <button class="btn btn-transparent p-0 btn-sm share-button"
-                                                    onclick="shareOnFacebook('{{ route('news.view', ['slug' => $same_category_news->slug]) }}')">
-                                                    <i class="fa-regular fa-share-from-square"></i> सेयर
+                                            <small class="d-block" style="font-weight: 500;font-size:14px"><span
+                                                    class="text-secondary">By</span> <a href="{{ route('frontend.home') }}"
+                                                    class="text-decoration-none text-dark">TransparentHub</a> - <span
+                                                    class="text-secondary">{{ $same_category_news->created_at->format('M d, Y') }}</span>
+                                                <button class="btn btn-transparent p-0 btn-sm share-button mt-0 mb-1 ms-1"
+                                                    onclick="shareOnFacebook('{{ route('news.view', ['slug' => $same_category_news->slug]) }}')" title="share on facebook">
+                                                    <i class="fa-regular fa-share-from-square"></i>
                                                 </button>
-                                               
-                                            </div>
+                                            </small>
+                                            <p class="mt-1 fw-light">
+                                                {{ \Illuminate\Support\Str::limit(html_entity_decode(strip_tags($same_category_news->description)), 100, '...') }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +204,8 @@
                     <form action="{{ route('news.view') }}" method="GET" id="news-search-form">
                         <div class="input-group position-relative">
                             <input type="text" class="form-control" id="keyword" name="keyword"
-                                placeholder="शीर्षक वा स्तम्भ खोज्नुहोस" aria-label="Search by keyword" autocomplete="off">
+                                placeholder="शीर्षक वा स्तम्भ खोज्नुहोस" aria-label="Search by keyword"
+                                autocomplete="off">
                             <button type="submit" class="btn btn-danger text-white">
                                 <i class="fa-solid fa-magnifying-glass"></i> Search
                             </button>
