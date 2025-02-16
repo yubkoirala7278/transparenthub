@@ -4,6 +4,10 @@ use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\news\CategoryController;
 use App\Http\Controllers\admin\news\NewsController;
 use App\Http\Controllers\admin\news\SourceController;
+use App\Http\Controllers\admin\palika\DistrictController;
+use App\Http\Controllers\admin\palika\PalikaController;
+use App\Http\Controllers\admin\palika\PalikaQnAController;
+use App\Http\Controllers\admin\palika\ProvinceController;
 use App\Http\Controllers\admin\products\BrandController;
 use App\Http\Controllers\admin\products\CategoryController as ProductsCategoryController;
 use App\Http\Controllers\admin\products\ColorController;
@@ -24,22 +28,34 @@ Route::patch('/products_color/toggle-status/{slug}', [ColorController::class, 't
 Route::patch('/products_size/toggle-status/{slug}', [SizeController::class, 'toggleStatus'])->name('product_size.toggle-status');
 Route::patch('/products/toggle-status/{slug}', [ProductController::class, 'toggleStatus'])->name('products.toggle-status');
 Route::get('/get-subcategories', [ProductController::class, 'getSubCategories'])->name('getSubCategories');
+Route::patch('/province/toggle-status/{slug}', [ProvinceController::class, 'toggleStatus'])->name('province.toggle-status');
+Route::patch('/district/toggle-status/{slug}', [DistrictController::class, 'toggleStatus'])->name('district.toggle-status');
+Route::patch('/palika/toggle-status/{slug}', [PalikaController::class, 'toggleStatus'])->name('palika.toggle-status');
+Route::patch('/palika-qna/toggle-status/{slug}', [PalikaQnAController::class, 'toggleStatus'])->name('palika.qna.toggle-status');
 
 Route::resources([
-    'blogs'=>BlogController::class,
+    'blogs' => BlogController::class,
     // -----------news---------------------
-    'news_category'=>CategoryController::class,
-    'news_source'=>SourceController::class,
-    'news'=>NewsController::class,
+    'news_category' => CategoryController::class,
+    'news_source' => SourceController::class,
+    'news' => NewsController::class,
     //----------end of news-----------------
+
     // --------products----------------------
-    'products_category'=>ProductsCategoryController::class,
-    'products_sub_category'=>SubCategoryController::class,
-    'products_brand'=>BrandController::class,
-    'color'=>ColorController::class,
-    'size'=>SizeController::class,
-    'products'=>ProductController::class,
+    'products_category' => ProductsCategoryController::class,
+    'products_sub_category' => SubCategoryController::class,
+    'products_brand' => BrandController::class,
+    'color' => ColorController::class,
+    'size' => SizeController::class,
+    'products' => ProductController::class,
     // ------end of products------------------
+
+    // -----------palika---------------------
+    'province' => ProvinceController::class,
+    'district'=>DistrictController::class,
+    'palika'=>PalikaController::class,
+    'palika_qna'=>PalikaQnAController::class,
+    // ------end of palika-------------------
 ]);
 // news
 Route::post('ckeditor/upload', [NewsController::class, 'upload'])->name('ckeditor.upload');
@@ -48,11 +64,6 @@ Route::post('ckeditor/delete', [NewsController::class, 'delete'])->name('ckedito
 Route::post('ckeditor/upload/product', [ProductController::class, 'upload'])->name('ckeditor.upload.product');
 Route::post('ckeditor/delete/product', [ProductController::class, 'delete'])->name('ckeditor.delete.product');
 
-Route::get('/orders',[OrderController::class,'index'])->name('admin.orders');
-Route::get('/orders/{slug}',[OrderController::class,'view'])->name('admin.orders.view');
-Route::put('/status/update/{slug}',[OrderController::class,'updateStatus'])->name('admin.update.status');
-
-
-
-
-
+Route::get('/orders', [OrderController::class, 'index'])->name('admin.orders');
+Route::get('/orders/{slug}', [OrderController::class, 'view'])->name('admin.orders.view');
+Route::put('/status/update/{slug}', [OrderController::class, 'updateStatus'])->name('admin.update.status');

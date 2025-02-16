@@ -34,6 +34,9 @@
         body{
             background-color: #fff2f224;
         }
+        footer{
+            margin-top: 3rem;
+        }
     </style>
 </head>
 

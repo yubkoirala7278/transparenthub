@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('zip')->nullable();
 
             $table->decimal('sub_total',10,2);
-            $table->decimal('shipping_charge',10,2);
+            $table->decimal('shipping_charge',10,2)->default(0);
             $table->decimal('coupon_discount',10,2)->default(0);
             $table->decimal('total_charge',10,2);
             $table->enum('payment_status',['paid','not_paid'])->default('not_paid');

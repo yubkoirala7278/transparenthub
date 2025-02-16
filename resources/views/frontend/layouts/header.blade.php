@@ -17,7 +17,7 @@
                         <ul class="dropdown-menu shadow-sm bg-white">
                             <li><a class="dropdown-item text-dark dropdown-hover" href="#">Manage My Account</a>
                             </li>
-                            <li><a class="dropdown-item text-dark dropdown-hover" href="">My Orders</a></li>
+                            <li><a class="dropdown-item text-dark dropdown-hover" href="{{route('my-order')}}">My Orders</a></li>
                             <li><a class="dropdown-item text-dark dropdown-hover" href="#">My WishList</a></li>
                             <li>
                                 <a class="dropdown-item text-dark dropdown-hover" href="{{ route('logout') }}"

@@ -24,10 +24,10 @@
                         <hr>
                         <!-- Action Buttons -->
                         <div class="d-flex justify-content-center gap-3">
-                            <a href="{{ route('shop') }}" class="btn btn-primary btn-lg">
+                            <a href="{{ route('shop') }}" class="btn  btn-lg text-light" style="background-color: #126EC0">
                                 Continue Shopping
                             </a>
-                            <a href="" class="btn btn-outline-secondary btn-lg">
+                            <a href="{{route('my-order')}}" class="btn btn-outline-secondary btn-lg">
                                 View My Orders
                             </a>
                         </div>

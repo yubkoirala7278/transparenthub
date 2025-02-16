@@ -17,13 +17,13 @@ class OrderController extends Controller
             return DataTables::of($orders)
                 ->addIndexColumn()
                 ->editColumn('status', function ($order) {
-                    if($order->status=='pending'){
+                    if ($order->status == 'pending') {
                         return '<span class="badge badge-info">Pending</span>';
-                    }else if($order->status=='shipped'){
+                    } else if ($order->status == 'shipped') {
                         return '<span class="badge badge-warning">Shipped</span>';
-                    }else if($order->status=='delivered'){
+                    } else if ($order->status == 'delivered') {
                         return '<span class="badge badge-success">Delivered</span>';
-                    }else if($order->status=='cancelled'){
+                    } else if ($order->status == 'cancelled') {
                         return '<span class="badge badge-danger">Cancelled</span>';
                     }
                 })
@@ -61,7 +61,7 @@ class OrderController extends Controller
         try {
             Order::where('slug', $slug)->update([
                 'status' => $request->status,
-                'shipped_date' => $request->shipped_date && $request->status=='delivered'?$request->shipped_date: null
+                'shipped_date' => $request->shipped_date && $request->status == 'delivered' ? $request->shipped_date : null
             ]);
             return back()->with('success', 'Status updated successfully!');
         } catch (\Throwable $th) {

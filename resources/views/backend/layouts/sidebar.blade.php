@@ -41,7 +41,7 @@
                 </li>
 
                 <li class="nav-item pcoded-hasmenu">
-                    <a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-newspaper"></i></span><span class="pcoded-mtext">E-commerce</span></a>
+                    <a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-cart-shopping"></i></span><span class="pcoded-mtext">E-commerce</span></a>
                     <ul class="pcoded-submenu" style="padding: 0px">
                         <li><a href="{{route('products.index')}}">Products</a></li>
                         <li><a href="{{route('admin.orders')}}">Orders</a></li>
@@ -50,6 +50,16 @@
                         <li><a href="{{route('products_brand.index')}}">Brands</a></li>
                         <li><a href="{{route('color.index')}}">Color</a></li>
                         <li><a href="{{route('size.index')}}">Size</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-earth-americas"></i></span><span class="pcoded-mtext">Municipalities</span></a>
+                    <ul class="pcoded-submenu" style="padding: 0px">
+                        <li><a href="{{route('province.index')}}">Province</a></li>
+                        <li><a href="{{route('district.index')}}">District</a></li>
+                        <li><a href="{{route('palika.index')}}">Municipality</a></li>
+                        <li><a href="{{route('palika_qna.index')}}">Municipality Q&A</a></li>
                     </ul>
                 </li>
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\frontend\BlogController;
 use App\Http\Controllers\frontend\ContactController;
 use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\frontend\NewsController;
+use App\Http\Controllers\frontend\OrderController;
 use App\Http\Controllers\frontend\PalikaController;
 use App\Http\Controllers\frontend\ProfessionalController;
 use App\Http\Controllers\frontend\ShopController;
@@ -18,7 +19,7 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/professional-services', [ProfessionalController::class, 'index'])->name('professional');
 Route::get('/professional-detail', [ProfessionalController::class, 'professionalDetail'])->name('professional.detail');
 Route::get('/palika', [PalikaController::class, 'index'])->name('palika');
-Route::get('/palika-detail', [PalikaController::class, 'palikaDetail'])->name('palika-detail');
+Route::get('/palika-detail/{slug}', [PalikaController::class, 'palikaDetail'])->name('palika-detail');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/blog-detail/{slug}', [BlogController::class, 'blogDetail'])->name('blog.detail');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
@@ -45,6 +46,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout',[ShopController::class,'checkout'])->name('checkout');
     // checkout produt
     Route::post('/checkout-products',[ShopController::class,'checkoutProduct'])->name('checkout.products');
+    Route::get('/checkout-success',[ShopController::class,'orderSuccess'])->name('order.success');
+    // check my orders
+    Route::get('/my-orders',[OrderController::class,'index'])->name('my-order');
+    Route::get('/my-orders-detail/{slug}',[OrderController::class,'orderDetails'])->name('my-order-details');
+    Route::put('/orders/{id}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
 });
 
 

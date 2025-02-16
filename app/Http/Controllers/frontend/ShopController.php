@@ -423,7 +423,7 @@ class ShopController extends Controller
             // $shippingCharge = ShippingCharge::where('country_name', $countryName)->value('amount');
             // $couponId = UserCoupon::where('user_id', Auth::user()->id)->latest()->value('coupon_id');
             // $couponDiscount = DiscountCoupon::where('id', $couponId)->latest()->value('discount_amount');
-            return view('frontend.pages.checkout', compact('cartsProducts','customerDetail'));
+            return view('frontend.pages.checkout', compact('cartsProducts', 'customerDetail'));
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -507,14 +507,23 @@ class ShopController extends Controller
                 }
                 // event(new OrderPlaced($customerAddress, $carts, $shippingCharge, $subTotal, $couponDiscount, $totalCharge));
                 Cart::where('user_id', Auth::user()->id)->delete();
-                return view('frontend.pages.order_success');
+                return redirect()->route('order.success');
             } elseif ($paymentMethod === 'credit_card') {
                 dd('pay with credit_card');
-            }elseif ($paymentMethod === 'paypal') {
+            } elseif ($paymentMethod === 'paypal') {
                 dd('pay with paypal');
-            }else{
+            } else {
                 dd('invalid payment method');
             }
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function orderSuccess()
+    {
+        try {
+            return view('frontend.pages.order_success');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

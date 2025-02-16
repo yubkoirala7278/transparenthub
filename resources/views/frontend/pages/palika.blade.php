@@ -26,14 +26,10 @@
                             <option value="" selected="selected">Please select pradesh first
                             </option>
                         </select>
-
                     </div>
-
-
 
                 </div>
             </div>
-
             <div class="col-md-9">
                 <div class="row">
                     <div class="palike-box">
@@ -47,56 +43,78 @@
 @endsection
 
 @push('script')
-    <script src="{{ asset('frontend/js/palika.js') }}"></script>
-
     <script>
         window.onload = function() {
             var pradeshSel = document.getElementById("pradesh");
             var districtSel = document.getElementById("district");
             var rowContainer = document.querySelector('.palike-box');
 
-            // Populate Pradesh dropdown
-            for (var x in palikaObject) {
-                pradeshSel.options[pradeshSel.options.length] = new Option(x, x);
+            // Build our data object dynamically using data from the DB, including slug, population, and area
+            var palikaObject = {};
+            @foreach ($provinces as $province)
+                palikaObject["{{ $province->name }}"] = {};
+                @foreach ($province->districts as $district)
+                    palikaObject["{{ $province->name }}"]["{{ $district->name }}"] = [];
+                    @foreach ($district->palikas as $palika)
+                        palikaObject["{{ $province->name }}"]["{{ $district->name }}"].push({
+                            name: "{{ $palika->name }}",
+                            slug: "{{ $palika->slug }}",
+                            population: "{{ $palika->population }}",
+                            area: "{{ $palika->total_area }}"
+                        });
+                    @endforeach
+                @endforeach
+            @endforeach
+
+            // Create URL template for the palika detail page with a placeholder for the slug.
+            var urlTemplate = "{{ route('palika-detail', ['slug' => 'PLACEHOLDER']) }}";
+
+            // Populate Pradesh dropdown using keys from palikaObject
+            for (var province in palikaObject) {
+                pradeshSel.options[pradeshSel.options.length] = new Option(province, province);
             }
 
-            // Event listener for Pradesh selection change
+            // Listen for changes in the Pradesh (province) dropdown
             pradeshSel.addEventListener('change', function() {
-                districtSel.length = 1; // Reset districts dropdown
-                for (var y in palikaObject[this.value]) {
-                    districtSel.options[districtSel.options.length] = new Option(y, y);
+                // Reset the district dropdown
+                districtSel.length = 1;
+                // Populate District dropdown using keys from the selected province
+                for (var district in palikaObject[this.value]) {
+                    districtSel.options[districtSel.options.length] = new Option(district, district);
                 }
 
-                // Automatically trigger the district selection change
+                // Automatically trigger a district change if there's at least one district
                 if (districtSel.options.length > 1) {
                     districtSel.selectedIndex = 1;
                     districtSel.dispatchEvent(new Event('change'));
                 }
             });
 
-            // Event listener for District selection change
+            // Listen for changes in the District dropdown
             districtSel.addEventListener('change', function() {
-                rowContainer.innerHTML = ''; // Clear previous entries
-                var z = palikaObject[pradeshSel.value][this.value];
-                for (var i = 0; i < z.length; i++) {
+                // Clear previous palika entries
+                rowContainer.innerHTML = '';
+                var palikas = palikaObject[pradeshSel.value][this.value];
+                for (var i = 0; i < palikas.length; i++) {
                     var box = document.createElement('div');
                     box.className = 'box';
 
                     var pname = document.createElement('h3');
                     pname.className = 'palika-name';
-                    pname.textContent = z[i];
+                    pname.textContent = palikas[i].name;
 
                     var population = document.createElement('span');
                     population.className = 'population';
-                    population.textContent = "Population: 19800";
+                    population.textContent = "Population: " + palikas[i].population;
 
                     var area = document.createElement('span');
                     area.className = 'area';
-                    area.textContent = "Area: 19800 sq.ft";
+                    area.textContent = "Area: " + palikas[i].area + " sq.km";
 
                     var readBtn = document.createElement('a');
                     readBtn.className = 'palika-read-more btn btn-sm btn-danger';
-                    readBtn.href = "{{ route('palika-detail') }}";
+                    // Replace the placeholder with the actual slug from the palika
+                    readBtn.href = urlTemplate.replace('PLACEHOLDER', palikas[i].slug);
                     readBtn.textContent = "Read More";
 
                     box.appendChild(pname);
@@ -107,75 +125,11 @@
                 }
             });
 
-            // Set the first Pradesh as selected and trigger change event programmatically
+            // If there is at least one province, trigger the change event for the first one.
             if (pradeshSel.options.length > 1) {
                 pradeshSel.selectedIndex = 1;
                 pradeshSel.dispatchEvent(new Event('change'));
             }
         };
     </script>
-
-    {{-- <script>
-        window.onload = function() {
-            var pradeshSel = document.getElementById("pradesh");
-            var districtSel = document.getElementById("district");
-            // var municipalitySel = document.getElementById("municipality");
-            for (var x in palikaObject) {
-                pradeshSel.options[pradeshSel.options.length] = new Option(x, x);
-            }
-            pradeshSel.onchange = function() {
-                //empty Chapters- and Topics- dropdowns
-                // municipalitySel.length = 1;
-                districtSel.length = 1;
-                //display correct values
-                for (var y in palikaObject[this.value]) {
-                    districtSel.options[districtSel.options.length] = new Option(y, y);
-                }
-            }
-            districtSel.onchange = function() {
-                var rowContainer = document.querySelector('.palike-box');
-                rowContainer.innerHTML = '';
-                //empty Chapters dropdown
-                // municipalitySel.length = 1;
-                //display correct values
-                var z = palikaObject[pradeshSel.value][this.value];
-                for (var i = 0; i < z.length; i++) {
-                    // municipalitySel.options[municipalitySel.options.length] = new Option(z[i], z[i]);
-
-
-                    // Create a new box with a p tag for each municipality
-                    var box = document.createElement('div');
-                    box.className = 'box';
-                    var pname = document.createElement('h3');
-                    var population = document.createElement('span');
-                    var area = document.createElement('span');
-
-                    var readBtn = document.createElement('a');
-
-
-                    pname.className = 'palika-name';
-                    population.className = 'population';
-                    area.className = 'area';
-                    readBtn.className = 'palika-read-more btn btn-sm btn-danger';
-                    readBtn.href = "{{ route('palika-detail') }}";
-
-                    pname.textContent = z[i];
-                    population.textContent = "Population:- 19800";
-                    area.textContent = "area:- 19800 sq.fit";
-                    readBtn.textContent = "Read More";
-
-
-                    // Append p tag to box and box to row container
-                    box.appendChild(pname);
-                    box.appendChild(population);
-                    box.appendChild(area);
-                    box.appendChild(readBtn);
-                    rowContainer.appendChild(box);
-
-
-                }
-            }
-
-        }
-    </script> --}}
 @endpush
