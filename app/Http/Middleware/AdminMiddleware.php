@@ -22,7 +22,7 @@ class AdminMiddleware
 
         if (Auth::check()) {
             $user = Auth::user();
-            if ($user->hasRole(['admin'])) {
+            if ($user->hasRole(['admin','professional'])) {
                 return $next($request);
             }
             Auth::logout();

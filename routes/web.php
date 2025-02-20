@@ -16,10 +16,8 @@ require __DIR__ . '/public.php';
 // =======end of Frontend=========
 
 // ===========Backend============
-Route::middleware(['auth.admin'])->group(function () {
-    Route::prefix('admin')->group(function () {
-        require __DIR__ . '/admin.php';
-    });
+Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
+    require __DIR__ . '/admin.php';
 });
 // =======end of Backend====
 

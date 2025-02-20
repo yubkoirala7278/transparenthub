@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\NewsSource;
 use App\Models\ProductCategory;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -44,7 +45,9 @@ class HomeController extends Controller
                 ->latest()
                 ->get();
             $product_categories = ProductCategory::where('status', 'active')->orderBy('name', 'asc')->get();
-            return view('frontend.pages.index', compact('bulletin_news', 'lokPriyaNews', 'news_sources', 'trendingNews', 'sahitya_blog_news', 'product_categories'));
+
+            $professionals=User::role('professional')->where('status','active')->latest()->get();
+            return view('frontend.pages.index', compact('bulletin_news', 'lokPriyaNews', 'news_sources', 'trendingNews', 'sahitya_blog_news', 'product_categories','professionals'));
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }

@@ -24,8 +24,9 @@ class ShopController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
         try {
             // Fetch active categories that have at least one product
             $categories = ProductCategory::where('status', 'active')
@@ -44,8 +45,12 @@ class ShopController extends Controller
             // Fetch active colors (or all if you prefer)
             $colors = ProductColor::where('status', 'active')->get();
 
+            $categoryId = request('category');
             // Get the first six active products
             $initialProducts = Product::where('status', 'active')
+                ->when($categoryId, function ($query) use ($categoryId) {
+                    return $query->where('category_id', $categoryId);
+                })
                 ->latest()
                 ->take(6)
                 ->get();

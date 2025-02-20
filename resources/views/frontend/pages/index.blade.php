@@ -176,205 +176,32 @@
 
     <section class="mt-5 hr w-100"></section>
 
+    @if(count($professionals))
     <section class="container-fluid professionalist" id="home-professional">
         <div class="section-title">
             <h2 class="fs-5 mb-3 title">हाम्रो विशेषज्ञहरु</h2>
         </div>
-
-
         <div class="professional-slider g-3 mt-4">
-
+            @foreach ($professionals as $professional)
             <div class="item px-2">
                 <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-1.jpg') }}" class="w-100" alt="Dr. John Doe">
+                    <img src="{{ asset($professional->professional->profile_image) }}" class="w-100" alt="Dr. John Doe">
                     <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
+                        <p class="m-0"><strong>{{$professional->name}}</strong></p>
+                        <small>{{$professional->professional->category->name}} ({{$professional->professional->subCategory->name}})</small>
                         <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
+                            <a href="{{ route('professional.detail',$professional->slug) }}" class="btn btn-primary p-2"
                                 style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
+                                <a href="{{ route('professional.detail',$professional->slug) }}" class="btn btn-danger p-2"
+                                    style="font-size: 13px;">Appoinment</a>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-2.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-1.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-3.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-4.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-4.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-4.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-3.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-2.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-1.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-2.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item px-2">
-                <div class="box shadow">
-                    <img src="{{ asset('frontend/img/professional/team-1.jpg') }}" class="w-100" alt="Dr. John Doe">
-                    <div class="box-body">
-                        <p class="m-0"><strong>Dr. John Doe</strong></p>
-                        <small>MBBS, MD (Professional)</small>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('professional.detail') }}" class="btn btn-primary p-2"
-                                style="font-size: 13px;">View</a>
-                            <button class="btn btn-danger p-2" style="font-size: 13px;">Appoinment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            @endforeach
         </div>
-
     </section>
+    @endif
 
 
     <section class="container-fluid">
@@ -508,13 +335,15 @@
             <div class="item">
                 <div class="card" style="width: 100%">
                     <div class="product-image">
-                        <a href="">
+                        <a href="{{ route('shop', ['category' => $product_category->id]) }}"
+                            >
                             <img src="{{ asset($product_category->image) }}" class="img-fluid w-100"
                                 alt="Product Category Image" loading="lazy">
                         </a>
                     </div>
                     <div class="card-body">
-                        <a href="productdetail.html" class="text-decoration-none">
+                        <a href="{{ route('shop', ['category' => $product_category->id]) }}"
+                            class="text-decoration-none">
                             <h5 class="card-title m-0">
                                 {{$product_category->name}}
                             </h5>

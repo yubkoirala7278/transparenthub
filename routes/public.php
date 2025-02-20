@@ -12,17 +12,19 @@ use App\Http\Controllers\frontend\ShopController;
 use App\Http\Controllers\SocialiteController;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/professional-services', [ProfessionalController::class, 'index'])->name('professional');
-Route::get('/professional-detail', [ProfessionalController::class, 'professionalDetail'])->name('professional.detail');
+Route::get('/professional-detail/{slug}', [ProfessionalController::class, 'professionalDetail'])->name('professional.detail');
+Route::post('/appointment/book', [ProfessionalController::class, 'bookAppointment'])->name('appointment.book');
 Route::get('/palika', [PalikaController::class, 'index'])->name('palika');
 Route::get('/palika-detail/{slug}', [PalikaController::class, 'palikaDetail'])->name('palika-detail');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/blog-detail/{slug}', [BlogController::class, 'blogDetail'])->name('blog.detail');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::get('professional/get-subcategories/{categoryId}', [ProfessionalController::class, 'getSubcategories'])->name('professional.getSubcategories');
+
+
 
 // news
 Route::get('/news-detail/{slug?}/{keyword?}', [NewsController::class, 'news'])->name('news.view');
