@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['slug', 'name', 'description', 'price', 'compare_price', 'feature_image', 'sku', 'category_id', 'sub_category_id', 'brand_id', 'color_id', 'is_featured', 'track_qty', 'qty', 'status', 'shipping_returns','shipping_charge_inside_valley','shipping_charge_outside_valley'];
+    protected $fillable = ['slug', 'name', 'description', 'price', 'compare_price', 'feature_image', 'sku', 'category_id', 'sub_category_id', 'brand_id', 'color_id', 'is_featured', 'track_qty', 'qty', 'status', 'shipping_returns', 'shipping_charge_inside_valley', 'shipping_charge_outside_valley'];
     // Boot method to handle model events
     protected static function boot()
     {
@@ -69,9 +69,15 @@ class Product extends Model
         return $this->belongsToMany(ProductColor::class, 'product_color_product', 'product_id', 'color_id');
     }
 
-     // Relationship to size
-     public function sizes()
-     {
-         return $this->belongsToMany(ProductSize::class, 'product_size_product', 'product_id', 'size_id');
-     }
+    // Relationship to size
+    public function sizes()
+    {
+        return $this->belongsToMany(ProductSize::class, 'product_size_product', 'product_id', 'size_id');
+    }
+
+    //  Relationship with order items
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }
