@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
         AdminSeeder::class,
         NewsCategorySeeder::class,
         ProvinceDistrictSeeder::class,
-        // PalikasSeeder::class,
        ]);
     }
 }

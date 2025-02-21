@@ -13,7 +13,8 @@
                 </div>
                 <div class="collapse" id="nav-user-link">
                     <ul class="list-unstyled">
-                        <li class="list-group-item"><a href="{{route('profile.index')}}"><i class="fa-solid fa-user m-r-5"></i>View
+                        <li class="list-group-item"><a href="{{ route('profile.index') }}"><i
+                                    class="fa-solid fa-user m-r-5"></i>View
                                 Profile</a></li>
                         <li class="list-group-item"><a href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
@@ -59,7 +60,8 @@
                     </li>
 
                     <li class="nav-item pcoded-hasmenu">
-                        <a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i class="fa-solid fa-map-location-dot"></i></span><span
+                        <a href="javascript:void(0)" class="nav-link "><span class="pcoded-micon"><i
+                                    class="fa-solid fa-map-location-dot"></i></span><span
                                 class="pcoded-mtext">Municipalities</span></a>
                         <ul class="pcoded-submenu" style="padding: 0px">
                             <li><a href="{{ route('province.index') }}">Province</a></li>
@@ -74,9 +76,9 @@
                                     class="fa-solid fa-stethoscope"></i></span><span
                                 class="pcoded-mtext">Professional</span></a>
                         <ul class="pcoded-submenu" style="padding: 0px">
+                            <li><a href="{{ route('professional.index') }}">Professional</a></li>
                             <li><a href="{{ route('professional_category.index') }}">Category</a></li>
                             <li><a href="{{ route('professional_sub_category.index') }}">Sub Category</a></li>
-                            <li><a href="{{ route('professional.index') }}">Professional</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
